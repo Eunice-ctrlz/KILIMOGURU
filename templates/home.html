@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+
+{% block title %}KILIMO GURU - Smart Agriculture for Kenya{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="gradient-bg text-white py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="animate-fade-in">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    Smart Agriculture for <span class="text-yellow-300">Kenyan Farmers</span>
+                </h1>
+                <p class="text-xl text-green-100 mb-8">
+                    Access weather forecasts, market prices, crop management tools, 
+                    M-Pesa financing, and expert advisory - all in one platform.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    {% if user.is_authenticated %}
+                        {% if user.is_farmer %}
+                            <a href="{% url 'farmers:dashboard' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
+                                <i class="fas fa-chart-line mr-2"></i>Go to Dashboard
+                            </a>
+                        {% else %}
+                            <a href="{% url 'marketplace:buyer_dashboard' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
+                                <i class="fas fa-shopping-cart mr-2"></i>Browse Marketplace
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'accounts:register_farmer' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
+                            <i class="fas fa-user-plus mr-2"></i>Register as Farmer
+                        </a>
+                        <a href="{% url 'accounts:register_buyer' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold text-center hover:bg-green-50 transition">
+                            <i class="fas fa-store mr-2"></i>Register as Buyer
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 mt-12">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-300">50K+</div>
+                        <div class="text-sm text-green-100">Farmers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-300">47</div>
+                        <div class="text-sm text-green-100">Counties</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-300">KES 2B+</div>
+                        <div class="text-sm text-green-100">Transactions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Image -->
+            <div class="hidden md:block">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-green-400 rounded-3xl transform rotate-3 opacity-20"></div>
+                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=500&fit=crop" 
+                         alt="Kenyan Farmer" 
+                         class="relative rounded-3xl shadow-2xl w-full object-cover">
+                    
+                    <!-- Floating Cards -->
+                    <div class="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-cloud-sun text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Weather</div>
+                                <div class="font-semibold text-gray-800">24°C Sunny</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute -top-6 -right-6 bg-white rounded-xl p-4 shadow-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500">Maize Price</div>
+                                <div class="font-semibold text-gray-800">KES 3,500/bag</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                Everything You Need to <span class="gradient-text">Succeed</span>
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                KILIMO GURU provides comprehensive tools and services to help Kenyan farmers 
+                increase productivity, access markets, and improve their livelihoods.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-cloud-sun-rain text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Weather & Climate Alerts</h3>
+                <p class="text-gray-600 mb-4">
+                    Get real-time weather forecasts, drought warnings, and planting advisories 
+                    tailored to your location via SMS and app notifications.
+                </p>
+                <a href="{% url 'weather:dashboard' %}" class="text-green-600 font-medium hover:text-green-700">
+                    Check Weather <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-store text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Marketplace & Prices</h3>
+                <p class="text-gray-600 mb-4">
+                    Sell your produce directly to buyers, access real-time market prices from 
+                    Nairobi, Mombasa, and other major markets across Kenya.
+                </p>
+                <a href="{% url 'marketplace:produce_list' %}" class="text-blue-600 font-medium hover:text-blue-700">
+                    Browse Marketplace <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-mobile-alt text-yellow-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">M-Pesa Integration</h3>
+                <p class="text-gray-600 mb-4">
+                    Access loans, make payments, receive money for your produce, and 
+                    buy insurance - all through M-Pesa directly on the platform.
+                </p>
+                <a href="{% url 'finance:dashboard' %}" class="text-yellow-600 font-medium hover:text-yellow-700">
+                    Access Finance <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-seedling text-purple-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Crop Management</h3>
+                <p class="text-gray-600 mb-4">
+                    Track your crops from planting to harvest, get AI-powered pest and disease 
+                    detection, and access personalized planting calendars.
+                </p>
+                <a href="{% url 'crops:my_crops' %}" class="text-purple-600 font-medium hover:text-purple-700">
+                    Manage Crops <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-graduation-cap text-red-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Expert Advisory</h3>
+                <p class="text-gray-600 mb-4">
+                    Learn from agricultural experts through articles, webinars, and one-on-one 
+                    consultations. Available in English, Swahili, and local languages.
+                </p>
+                <a href="{% url 'advisory:home' %}" class="text-red-600 font-medium hover:text-red-700">
+                    Get Advice <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
+                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-chart-pie text-indigo-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Analytics & Reports</h3>
+                <p class="text-gray-600 mb-4">
+                    Track your farm's performance with detailed analytics, yield forecasts, 
+                    profitability reports, and data-driven recommendations.
+                </p>
+                <a href="{% url 'analytics:dashboard' %}" class="text-indigo-600 font-medium hover:text-indigo-700">
+                    View Analytics <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Market Prices Section -->
+<section class="bg-gray-100 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Today's Market Prices</h2>
+                <p class="text-gray-600 mt-2">Real-time prices from major markets across Kenya</p>
+            </div>
+            <a href="{% url 'marketplace:prices' %}" class="mt-4 md:mt-0 text-green-600 font-medium hover:text-green-700">
+                View All Prices <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Price Card 1 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Maize</h4>
+                        <p class="text-sm text-gray-500">90kg Bag</p>
+                    </div>
+                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">+2.5%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">KES 3,500</div>
+                <p class="text-sm text-gray-500 mt-1">Nairobi Market</p>
+            </div>
+            
+            <!-- Price Card 2 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Beans</h4>
+                        <p class="text-sm text-gray-500">90kg Bag</p>
+                    </div>
+                    <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">-1.2%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">KES 8,200</div>
+                <p class="text-sm text-gray-500 mt-1">Nairobi Market</p>
+            </div>
+            
+            <!-- Price Card 3 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Tomatoes</h4>
+                        <p class="text-sm text-gray-500">Per Crate</p>
+                    </div>
+                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">+5.0%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">KES 1,800</div>
+                <p class="text-sm text-gray-500 mt-1">Mombasa Market</p>
+            </div>
+            
+            <!-- Price Card 4 -->
+            <div class="bg-white rounded-xl p-6 shadow-md">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Potatoes</h4>
+                        <p class="text-sm text-gray-500">Extended Bag</p>
+                    </div>
+                    <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">0%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">KES 2,400</div>
+                <p class="text-sm text-gray-500 mt-1">Nakuru Market</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-16 md:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                How <span class="gradient-text">KILIMO GURU</span> Works
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Getting started is easy. Join thousands of Kenyan farmers already using our platform.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Step 1 -->
+            <div class="text-center">
+                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-3xl font-bold text-white">1</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Register</h3>
+                <p class="text-gray-600">
+                    Sign up with your phone number and create your farmer profile in minutes.
+                </p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="text-center">
+                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-3xl font-bold text-white">2</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Add Your Farm</h3>
+                <p class="text-gray-600">
+                    Map your farm, add your crops, and track your farming activities.
+                </p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="text-center">
+                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-3xl font-bold text-white">3</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Access Services</h3>
+                <p class="text-gray-600">
+                    Get weather alerts, market prices, loans, and expert advice.
+                </p>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="text-center">
+                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span class="text-3xl font-bold text-white">4</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Sell & Earn</h3>
+                <p class="text-gray-600">
+                    List your produce, connect with buyers, and receive M-Pesa payments.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="bg-green-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800">What Farmers Say</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    "KILIMO GURU has transformed my farming. I now get better prices for my maize 
+                    and the weather alerts help me plan my planting."
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" 
+                         alt="John Kamau" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <div class="font-semibold text-gray-800">John Kamau</div>
+                        <div class="text-sm text-gray-500">Maize Farmer, Kiambu</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    "The M-Pesa loans helped me buy quality seeds and fertilizers. My yield 
+                    increased by 40% last season. Highly recommended!"
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" 
+                         alt="Grace Wanjiku" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <div class="font-semibold text-gray-800">Grace Wanjiku</div>
+                        <div class="text-sm text-gray-500">Vegetable Farmer, Nakuru</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    "The pest detection feature saved my tomato farm. I got quick advice from 
+                    experts and managed to control the disease in time."
+                </p>
+                <div class="flex items-center">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" 
+                         alt="Peter Ochieng" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <div>
+                        <div class="font-semibold text-gray-800">Peter Ochieng</div>
+                        <div class="text-sm text-gray-500">Tomato Farmer, Kisumu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="gradient-bg py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Transform Your Farming?
+        </h2>
+        <p class="text-green-100 text-lg mb-8">
+            Join over 50,000 Kenyan farmers already using KILIMO GURU to improve their productivity and income.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            {% if user.is_authenticated %}
+                <a href="{% url 'farmers:dashboard' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition">
+                    Go to Dashboard
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:register_farmer' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition">
+                    Get Started Free
+                </a>
+                <a href="{% url 'accounts:login' %}" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Partners Section -->
+<section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-gray-500 mb-8">Trusted by leading organizations</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
+            <div class="text-2xl font-bold text-gray-400">KIAMIS</div>
+            <div class="text-2xl font-bold text-gray-400">KALRO</div>
+            <div class="text-2xl font-bold text-gray-400">AFA</div>
+            <div class="text-2xl font-bold text-gray-400">KMD</div>
+            <div class="text-2xl font-bold text-gray-400">Safaricom</div>
+            <div class="text-2xl font-bold text-gray-400">Equity Bank</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

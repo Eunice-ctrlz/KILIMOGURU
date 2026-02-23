@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - KILIMO GURU{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="gradient-bg text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-6">
+            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="w-full h-full rounded-full object-cover">
+                {% else %}
+                    <i class="fas fa-user text-green-600 text-4xl"></i>
+                {% endif %}
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold">{{ user.get_full_name|default:user.username }}</h1>
+                <p class="text-green-100">{{ user.get_user_type_display }} | {{ user.county|default:"Location not set" }}</p>
+                <div class="flex items-center mt-2 space-x-4">
+                    <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                        <i class="fas fa-star mr-1"></i>Credit Score: {{ profile.credit_score|default:"0" }}
+                    </span>
+                    {% if user.is_verified %}
+                        <span class="bg-green-500 px-3 py-1 rounded-full text-sm">
+                            <i class="fas fa-check-circle mr-1"></i>Verified
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Info -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Farm Details -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800">Farm Details</h2>
+                    <a href="{% url 'farmers:profile_edit' %}" class="text-green-600 hover:text-green-700">
+                        <i class="fas fa-edit mr-1"></i>Edit
+                    </a>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-gray-500 text-sm">Farm Name</p>
+                            <p class="font-semibold text-gray-800">{{ profile.farm_name|default:"Not set" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Farm Size</p>
+                            <p class="font-semibold text-gray-800">{{ profile.farm_size|default:"0" }} {{ profile.get_farm_size_unit_display }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Location</p>
+                            <p class="font-semibold text-gray-800">{{ profile.farm_location|default:"Not set" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Farming Type</p>
+                            <p class="font-semibold text-gray-800">{{ profile.get_farming_type_display }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Irrigation Method</p>
+                            <p class="font-semibold text-gray-800">{{ profile.get_irrigation_method_display }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Years of Experience</p>
+                            <p class="font-semibold text-gray-800">{{ profile.years_of_experience }} years</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Soil Information -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Soil Information</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-gray-500 text-sm">Soil Type</p>
+                            <p class="font-semibold text-gray-800">{{ profile.get_soil_type_display }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Soil pH</p>
+                            <p class="font-semibold text-gray-800">{{ profile.soil_ph|default:"Not tested" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Fertility</p>
+                            <p class="font-semibold text-gray-800">{{ profile.get_soil_fertility_display }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Farm Parcels -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800">Farm Parcels</h2>
+                    <a href="{% url 'farmers:parcel_add' %}" class="text-green-600 hover:text-green-700">
+                        <i class="fas fa-plus mr-1"></i>Add Parcel
+                    </a>
+                </div>
+                <div class="p-6">
+                    {% if profile.parcels.all %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% for parcel in profile.parcels.all %}
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ parcel.parcel_name }}</p>
+                                            <p class="text-sm text-gray-500">{{ parcel.size }} {{ parcel.get_size_unit_display }}</p>
+                                        </div>
+                                        {% if parcel.is_active %}
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Active</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if parcel.current_crop %}
+                                        <p class="text-sm text-gray-600 mt-2">
+                                            <i class="fas fa-seedling mr-1 text-green-500"></i>{{ parcel.current_crop }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-gray-500 text-center py-4">No parcels added yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- Contact Info -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Contact Information</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <i class="fas fa-phone text-green-600 w-6"></i>
+                        <span class="text-gray-700">{{ user.phone_number|default:"Not set" }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope text-green-600 w-6"></i>
+                        <span class="text-gray-700">{{ user.email|default:"Not set" }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt text-green-600 w-6"></i>
+                        <span class="text-gray-700">{{ user.county|default:"Not set" }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-mobile-alt text-green-600 w-6"></i>
+                        <span class="text-gray-700">M-Pesa: {{ user.mpesa_number|default:"Not set" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Financial Info -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Financial Overview</h3>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-gray-500 text-sm">Credit Score</p>
+                        <div class="flex items-center">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: {{ profile.credit_score }}%"></div>
+                            </div>
+                            <span class="font-semibold">{{ profile.credit_score }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Credit Limit</p>
+                        <p class="font-semibold text-gray-800">KES {{ profile.credit_limit|floatformat:0 }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm">Annual Income</p>
+                        <p class="font-semibold text-gray-800">KES {{ profile.annual_income|floatformat:0|default:"0" }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cooperative -->
+            {% if profile.is_cooperative_member %}
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Cooperative</h3>
+                    <p class="text-gray-700">
+                        <i class="fas fa-users text-green-600 mr-2"></i>
+                        {{ profile.cooperative_name }}
+                    </p>
+                </div>
+            {% endif %}
+            
+            <!-- Subsidy -->
+            {% if profile.is_subsidy_beneficiary %}
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Subsidy Information</h3>
+                    <p class="text-gray-700">
+                        <i class="fas fa-hand-holding-usd text-green-600 mr-2"></i>
+                        {{ profile.subsidy_type }}
+                    </p>
+                </div>
+            {% endif %}
+            
+            <!-- Actions -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+                <div class="space-y-2">
+                    <a href="{% url 'accounts:profile_edit' %}" class="block w-full text-center py-2 border border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition">
+                        <i class="fas fa-user-edit mr-2"></i>Edit Account
+                    </a>
+                    <a href="{% url 'accounts:change_password' %}" class="block w-full text-center py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-lock mr-2"></i>Change Password
+                    </a>
+                    <a href="{% url 'farmers:kiamis_sync' %}" class="block w-full text-center py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-sync mr-2"></i>Sync with KIAMIS
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

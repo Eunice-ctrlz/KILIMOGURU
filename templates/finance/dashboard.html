@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}Finance - KILIMO GURU{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">Finance Center</h1>
+        <p class="text-yellow-100 text-lg">Manage your farm finances, loans, and insurance</p>
+    </div>
+</div>
+
+<!-- Wallet Card -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
+    <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl shadow-xl p-8 text-white">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+                <p class="text-green-100 mb-2">Wallet Balance</p>
+                <h2 class="text-4xl font-bold">KES {{ wallet.balance|floatformat:2 }}</h2>
+                <p class="text-green-100 mt-2">
+                    <i class="fas fa-shield-alt mr-1"></i> Secure & Instant M-Pesa Transactions
+                </p>
+            </div>
+            <div class="mt-6 md:mt-0 flex space-x-3">
+                <a href="{% url 'finance:wallet_deposit' %}" class="bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition">
+                    <i class="fas fa-plus mr-2"></i>Deposit
+                </a>
+                <a href="{% url 'finance:wallet_withdraw' %}" class="bg-green-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-900 transition">
+                    <i class="fas fa-minus mr-2"></i>Withdraw
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Column -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="{% url 'finance:mpesa_pay' %}" class="bg-white rounded-xl shadow-md p-6 text-center card-hover">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-mobile-alt text-green-600 text-xl"></i>
+                    </div>
+                    <p class="font-medium text-gray-700">M-Pesa Pay</p>
+                </a>
+                <a href="{% url 'finance:loan_list' %}" class="bg-white rounded-xl shadow-md p-6 text-center card-hover">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-hand-holding-usd text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="font-medium text-gray-700">Get Loan</p>
+                </a>
+                <a href="{% url 'finance:insurance_list' %}" class="bg-white rounded-xl shadow-md p-6 text-center card-hover">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-shield-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <p class="font-medium text-gray-700">Insurance</p>
+                </a>
+                <a href="{% url 'finance:transactions' %}" class="bg-white rounded-xl shadow-md p-6 text-center card-hover">
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-history text-orange-600 text-xl"></i>
+                    </div>
+                    <p class="font-medium text-gray-700">History</p>
+                </a>
+            </div>
+            
+            <!-- Active Loans -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800">Active Loans</h2>
+                    <a href="{% url 'finance:loan_list' %}" class="text-blue-600 text-sm hover:text-blue-700">View All</a>
+                </div>
+                <div class="p-6">
+                    {% if active_loans %}
+                        <div class="space-y-4">
+                            {% for loan in active_loans %}
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ loan.loan_product.name }}</p>
+                                            <p class="text-sm text-gray-500">{{ loan.loan_product.provider_name }}</p>
+                                        </div>
+                                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                                            {{ loan.get_status_display }}
+                                        </span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 text-sm">
+                                        <div>
+                                            <p class="text-gray-500">Amount</p>
+                                            <p class="font-semibold">KES {{ loan.disbursed_amount|floatformat:0 }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Repaid</p>
+                                            <p class="font-semibold">KES {{ loan.total_repaid|floatformat:0 }}</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-500">Due Date</p>
+                                            <p class="font-semibold">{{ loan.due_date }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span class="text-gray-500">Repayment Progress</span>
+                                            <span class="font-medium">{{ loan.progress_percentage|floatformat:0 }}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-green-600 h-2 rounded-full" style="width: {{ loan.progress_percentage }}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-hand-holding-usd text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500 mb-2">No active loans</p>
+                            <a href="{% url 'finance:loan_list' %}" class="text-blue-600 hover:text-blue-700">Apply for a loan</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Transactions -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800">Recent M-Pesa Transactions</h2>
+                    <a href="{% url 'finance:mpesa_history' %}" class="text-blue-600 text-sm hover:text-blue-700">View All</a>
+                </div>
+                <div class="p-6">
+                    {% if mpesa_transactions %}
+                        <div class="space-y-3">
+                            {% for transaction in mpesa_transactions %}
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 {% if transaction.transaction_type == 'receive_money' or transaction.transaction_type == 'deposit' %}bg-green-100 text-green-600{% else %}bg-red-100 text-red-600{% endif %} rounded-full flex items-center justify-center">
+                                            {% if transaction.transaction_type == 'receive_money' or transaction.transaction_type == 'deposit' %}
+                                                <i class="fas fa-arrow-down"></i>
+                                            {% else %}
+                                                <i class="fas fa-arrow-up"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ transaction.get_transaction_type_display }}</p>
+                                            <p class="text-sm text-gray-500">{{ transaction.initiated_at|date:"M d, Y" }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-semibold {% if transaction.transaction_type == 'receive_money' or transaction.transaction_type == 'deposit' %}text-green-600{% else %}text-red-600{% endif %}">
+                                            {% if transaction.transaction_type == 'receive_money' or transaction.transaction_type == 'deposit' %}+{% else %}-{% endif %}KES {{ transaction.amount|floatformat:0 }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">{{ transaction.get_status_display }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <p class="text-gray-500">No transactions yet</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- Insurance Policies -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Insurance Policies</h2>
+                </div>
+                <div class="p-6">
+                    {% if insurance_policies %}
+                        <div class="space-y-4">
+                            {% for policy in insurance_policies %}
+                                <div class="p-4 bg-purple-50 rounded-lg">
+                                    <p class="font-semibold text-gray-800">{{ policy.insurance_product.name }}</p>
+                                    <p class="text-sm text-gray-600">Sum Insured: KES {{ policy.sum_insured|floatformat:0 }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">Valid until {{ policy.end_date }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-gray-500 mb-2">No active policies</p>
+                            <a href="{% url 'finance:insurance_list' %}" class="text-purple-600 hover:text-purple-700 text-sm">Get insured</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Loan Products -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Available Loans</h2>
+                </div>
+                <div class="p-6">
+                    {% for product in loan_products %}
+                        <div class="mb-4 last:mb-0">
+                            <p class="font-semibold text-gray-800">{{ product.name }}</p>
+                            <p class="text-sm text-gray-600">{{ product.provider_name }}</p>
+                            <div class="flex justify-between text-sm mt-1">
+                                <span class="text-gray-500">Up to KES {{ product.max_amount|floatformat:0 }}</span>
+                                <span class="text-green-600">{{ product.interest_rate }}% interest</span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-gray-500">No loan products available</p>
+                    {% endfor %}
+                    <a href="{% url 'finance:loan_list' %}" class="block text-center mt-4 text-blue-600 hover:text-blue-700">
+                        View All Loans <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Credit Score -->
+            <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-md p-6 text-white">
+                <h3 class="text-lg font-bold mb-2">Your Credit Score</h3>
+                <div class="flex items-center justify-center py-4">
+                    <div class="relative">
+                        <svg class="w-32 h-32 transform -rotate-90">
+                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="12" fill="none" class="text-blue-800"></circle>
+                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="12" fill="none" 
+                                    stroke-dasharray="351.86" stroke-dashoffset="{{ 351.86|add:-credit_score|div:100|mul:351.86 }}" 
+                                    class="text-white"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-3xl font-bold">{{ credit_score|default:"0" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-blue-100 text-sm">
+                    {% if credit_score > 700 %}Excellent{% elif credit_score > 500 %}Good{% else %}Building{% endif %}
+                </p>
+                <a href="{% url 'farmers:credit_score' %}" class="block text-center mt-4 text-white hover:text-blue-100">
+                    View Details <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

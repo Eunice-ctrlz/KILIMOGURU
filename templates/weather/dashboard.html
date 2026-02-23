@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather - KILIMO GURU{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">Weather & Climate</h1>
+        <p class="text-blue-100 text-lg">Stay informed with accurate weather forecasts for your farm</p>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <form method="get" action="{% url 'weather:county_weather' 'nairobi' %}" class="flex gap-4">
+            <div class="flex-1 relative">
+                <input type="text" name="county" placeholder="Enter your county..." 
+                       class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <i class="fas fa-search absolute left-3 top-4 text-gray-400"></i>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Get Weather
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Major Cities Weather -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Weather in Major Cities</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {% for weather in major_weather %}
+            <div class="bg-white rounded-xl shadow-md p-6 text-center card-hover">
+                <h3 class="font-semibold text-gray-800 mb-4">{{ weather.county }}</h3>
+                <div class="text-5xl mb-4">
+                    {% if 'rain' in weather.weather_condition|lower %}
+                        <i class="fas fa-cloud-rain text-blue-500"></i>
+                    {% elif 'cloud' in weather.weather_condition|lower %}
+                        <i class="fas fa-cloud text-gray-500"></i>
+                    {% elif 'sun' in weather.weather_condition|lower or 'clear' in weather.weather_condition|lower %}
+                        <i class="fas fa-sun text-yellow-500"></i>
+                    {% else %}
+                        <i class="fas fa-cloud-sun text-orange-500"></i>
+                    {% endif %}
+                </div>
+                <div class="text-3xl font-bold text-gray-800 mb-2">{{ weather.temperature|floatformat:0 }}°C</div>
+                <p class="text-gray-600 capitalize">{{ weather.weather_description }}</p>
+                <div class="flex justify-center space-x-4 mt-4 text-sm text-gray-500">
+                    <span><i class="fas fa-tint text-blue-400"></i> {{ weather.humidity }}%</span>
+                    <span><i class="fas fa-wind text-gray-400"></i> {{ weather.wind_speed|floatformat:0 }} km/h</span>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-full text-center py-8">
+                <p class="text-gray-500">Weather data loading...</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Active Alerts -->
+<div class="bg-red-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">
+                <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>Active Alerts
+            </h2>
+            <a href="{% url 'weather:alerts' %}" class="text-red-600 hover:text-red-700 font-medium">
+                View All <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        {% if active_alerts %}
+            <div class="space-y-4">
+                {% for alert in active_alerts %}
+                    <div class="bg-white rounded-xl shadow-md p-6 border-l-4 
+                        {% if alert.severity == 'extreme' %}border-red-600{% elif alert.severity == 'severe' %}border-red-500{% elif alert.severity == 'high' %}border-orange-500{% elif alert.severity == 'moderate' %}border-yellow-500{% else %}border-blue-500{% endif %}">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                        {% if alert.severity == 'extreme' %}bg-red-100 text-red-800{% elif alert.severity == 'severe' %}bg-red-100 text-red-700{% elif alert.severity == 'high' %}bg-orange-100 text-orange-800{% elif alert.severity == 'moderate' %}bg-yellow-100 text-yellow-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                                        {{ alert.get_severity_display }}
+                                    </span>
+                                    <span class="ml-3 text-sm text-gray-500">{{ alert.get_alert_type_display }}</span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ alert.title }}</h3>
+                                <p class="text-gray-600 mb-3">{{ alert.description|truncatewords:30 }}</p>
+                                <div class="text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt mr-1"></i> 
+                                    {{ alert.counties|join:", " }}
+                                </div>
+                            </div>
+                            <a href="{% url 'weather:alert_detail' alert.pk %}" class="text-blue-600 hover:text-blue-700">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white rounded-xl shadow-md p-8 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">No Active Alerts</h3>
+                <p class="text-gray-500">All clear! No weather alerts for your area.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Weather Services</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                <i class="fas fa-bell text-blue-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Weather Alerts</h3>
+            <p class="text-gray-600 mb-4">Get notified about severe weather, drought warnings, and farming advisories.</p>
+            <a href="{% url 'weather:subscribe' %}" class="text-blue-600 font-medium hover:text-blue-700">
+                Subscribe <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+            <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                <i class="fas fa-tint text-green-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Irrigation Advice</h3>
+            <p class="text-gray-600 mb-4">Get personalized irrigation recommendations based on weather and crop type.</p>
+            <a href="{% url 'weather:irrigation' %}" class="text-green-600 font-medium hover:text-green-700">
+                Get Advice <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                <i class="fas fa-calendar-alt text-purple-600 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">7-Day Forecast</h3>
+            <p class="text-gray-600 mb-4">Plan your farming activities with accurate 7-day weather forecasts.</p>
+            <a href="{% url 'weather:forecast' 'nairobi' %}" class="text-purple-600 font-medium hover:text-purple-700">
+                View Forecast <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Counties List -->
+<div class="bg-gray-100 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Select Your County</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {% for county in counties %}
+                <a href="{% url 'weather:county_weather' county|lower %}" 
+                   class="bg-white rounded-lg p-4 text-center shadow-sm hover:shadow-md transition card-hover">
+                    <span class="text-gray-700 font-medium">{{ county }}</span>
+                </a>
+            {% empty %}
+                <div class="col-span-full text-center py-8">
+                    <p class="text-gray-500">County data loading...</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

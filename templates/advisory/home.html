@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %}Advisory & E-Learning - KILIMO GURU{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">Agricultural Advisory</h1>
+        <p class="text-purple-100 text-lg">Learn from experts and improve your farming practices</p>
+    </div>
+</div>
+
+<!-- Daily Tip -->
+{% if daily_tip %}
+<div class="bg-yellow-50 border-b border-yellow-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex items-start space-x-4">
+            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-lightbulb text-white text-xl"></i>
+            </div>
+            <div>
+                <h3 class="font-semibold text-yellow-800 mb-1">Today's Farming Tip</h3>
+                <p class="text-yellow-700">{{ daily_tip.tip }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Featured Articles -->
+        <div class="lg:col-span-2">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Featured Articles</h2>
+                <a href="{% url 'advisory:article_list' %}" class="text-purple-600 hover:text-purple-700 font-medium">
+                    View All <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for article in featured_articles %}
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                        <div class="h-48 bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+                            {% if article.featured_image %}
+                                <img src="{{ article.featured_image.url }}" alt="{{ article.title }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <i class="fas fa-book-open text-purple-300 text-5xl"></i>
+                            {% endif %}
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center mb-2">
+                                <span class="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
+                                    {{ article.category.name }}
+                                </span>
+                                <span class="text-xs text-gray-500 ml-2">{{ article.get_language_display }}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">{{ article.title }}</h3>
+                            <p class="text-gray-600 text-sm mb-3">{{ article.summary|truncatewords:20 }}</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-eye mr-1"></i> {{ article.view_count }}
+                                    <i class="fas fa-heart ml-3 mr-1"></i> {{ article.like_count }}
+                                </div>
+                                <a href="{% url 'advisory:article_detail' article.slug %}" class="text-purple-600 font-medium hover:text-purple-700 text-sm">
+                                    Read More <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-span-2 text-center py-12">
+                        <p class="text-gray-500">No articles available yet.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Upcoming Webinars -->
+            <div class="mt-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Upcoming Webinars</h2>
+                    <a href="{% url 'advisory:webinar_list' %}" class="text-purple-600 hover:text-purple-700 font-medium">
+                        View All <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <div class="space-y-4">
+                    {% for webinar in upcoming_webinars %}
+                        <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-video text-purple-600 text-2xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-bold text-gray-800 mb-1">{{ webinar.title }}</h3>
+                                        <p class="text-gray-600 text-sm mb-2">{{ webinar.description|truncatewords:15 }}</p>
+                                        <div class="flex items-center text-sm text-gray-500">
+                                            <i class="fas fa-user mr-2"></i> {{ webinar.presenter.get_full_name }}
+                                            <span class="mx-2">|</span>
+                                            <i class="fas fa-calendar mr-2"></i> {{ webinar.scheduled_date }}
+                                            <span class="mx-2">|</span>
+                                            <i class="fas fa-clock mr-2"></i> {{ webinar.start_time }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="{% url 'advisory:webinar_detail' webinar.pk %}" 
+                                   class="mt-4 md:mt-0 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition text-center">
+                                    Register
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-8">
+                            <p class="text-gray-500">No upcoming webinars scheduled.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+                <div class="space-y-3">
+                    <a href="{% url 'advisory:book_consultation' %}" class="flex items-center p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition">
+                        <i class="fas fa-user-tie text-purple-600 mr-3"></i>
+                        <span class="text-gray-700">Book Expert Consultation</span>
+                    </a>
+                    <a href="{% url 'advisory:tele_vet_consult' %}" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition">
+                        <i class="fas fa-user-md text-green-600 mr-3"></i>
+                        <span class="text-gray-700">Vet Consultation</span>
+                    </a>
+                    <a href="{% url 'advisory:faq' %}" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                        <i class="fas fa-question-circle text-blue-600 mr-3"></i>
+                        <span class="text-gray-700">Browse FAQs</span>
+                    </a>
+                    <a href="{% url 'advisory:tips' %}" class="flex items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition">
+                        <i class="fas fa-lightbulb text-yellow-600 mr-3"></i>
+                        <span class="text-gray-700">Farming Tips</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Categories</h3>
+                <div class="space-y-2">
+                    {% for category in categories %}
+                        <a href="{% url 'advisory:article_list' %}?category={{ category.slug }}" 
+                           class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition">
+                            <span class="text-gray-700">{{ category.name }}</span>
+                            <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-500">No categories available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Popular FAQs -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Popular Questions</h3>
+                <div class="space-y-3">
+                    {% for faq in popular_faqs %}
+                        <a href="{% url 'advisory:faq' %}" class="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                            <p class="text-sm text-gray-700">{{ faq.question|truncatewords:10 }}</p>
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-500">No FAQs available yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Contact Support -->
+            <div class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-xl shadow-md p-6 text-white">
+                <h3 class="text-lg font-bold mb-2">Need Help?</h3>
+                <p class="text-purple-100 text-sm mb-4">Our agricultural experts are ready to assist you.</p>
+                <div class="space-y-2 text-sm">
+                    <p><i class="fas fa-phone mr-2"></i> +254 700 000 000</p>
+                    <p><i class="fas fa-envelope mr-2"></i> support@kilimoguru.co.ke</p>
+                    <p><i class="fas fa-comment mr-2"></i> WhatsApp Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

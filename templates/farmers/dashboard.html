@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+{% block title %}Farmer Dashboard - KILIMO GURU{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+                <p class="text-gray-500 mt-1">Here's what's happening on your farm today</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex space-x-3">
+                <a href="{% url 'crops:add_crop' %}" class="btn-primary text-white px-4 py-2 rounded-lg">
+                    <i class="fas fa-plus mr-2"></i>Add Crop
+                </a>
+                <a href="{% url 'marketplace:produce_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    <i class="fas fa-store mr-2"></i>Sell Produce
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Farm Area -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">Total Farm Area</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ total_farm_area|default:"0" }} acres</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-map-marked-alt text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Active Crops -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">Active Crops</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ current_crops|length }}</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-seedling text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Yield -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">This Year's Yield</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ total_yield_this_year|floatformat:0 }} kg</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-weight-hanging text-yellow-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Credit Score -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">Credit Score</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ credit_score|default:"0" }}</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-star text-purple-600 text-xl"></i>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Limit: KES {{ credit_limit|floatformat:0 }}</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Current Crops -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800">Current Crops</h2>
+                    <a href="{% url 'crops:my_crops' %}" class="text-green-600 text-sm hover:text-green-700">View All</a>
+                </div>
+                <div class="p-6">
+                    {% if current_crops %}
+                        <div class="space-y-4">
+                            {% for crop in current_crops %}
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-leaf text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ crop.crop.name }}</p>
+                                            <p class="text-sm text-gray-500">{{ crop.parcel.parcel_name|default:"No parcel" }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                                            {{ crop.get_status_display }}
+                                        </span>
+                                        <p class="text-sm text-gray-500 mt-1">Planted: {{ crop.planting_date }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-seedling text-gray-400 text-2xl"></i>
+                            </div>
+                            <p class="text-gray-500">No active crops</p>
+                            <a href="{% url 'crops:add_crop' %}" class="text-green-600 hover:text-green-700 mt-2 inline-block">Add your first crop</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Recent Farming History</h2>
+                </div>
+                <div class="p-6">
+                    {% if recent_history %}
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="text-left text-gray-500 text-sm">
+                                        <th class="pb-3">Crop</th>
+                                        <th class="pb-3">Season</th>
+                                        <th class="pb-3">Year</th>
+                                        <th class="pb-3">Yield</th>
+                                        <th class="pb-3">Profit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in recent_history %}
+                                        <tr class="border-t border-gray-100">
+                                            <td class="py-3">{{ record.crop_name }}</td>
+                                            <td class="py-3">{{ record.get_season_display }}</td>
+                                            <td class="py-3">{{ record.year }}</td>
+                                            <td class="py-3">{{ record.actual_yield|default:"-" }} {{ record.yield_unit }}</td>
+                                            <td class="py-3 {% if record.profit > 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                                                {% if record.profit %}KES {{ record.profit|floatformat:0 }}{% else %}-{% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-gray-500 text-center py-4">No farming history yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- Weather Widget -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold">Weather</h3>
+                    <i class="fas fa-cloud-sun text-2xl"></i>
+                </div>
+                <div class="text-center py-4">
+                    <div class="text-5xl font-bold mb-2">24°C</div>
+                    <p class="text-blue-100">Partly Cloudy</p>
+                    <p class="text-sm text-blue-100 mt-1">{{ user.county|default:"Nairobi" }}</p>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mt-4 text-center">
+                    <div>
+                        <i class="fas fa-tint mb-1"></i>
+                        <p class="text-sm">65%</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-wind mb-1"></i>
+                        <p class="text-sm">12 km/h</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-eye mb-1"></i>
+                        <p class="text-sm">10 km</p>
+                    </div>
+                </div>
+                <a href="{% url 'weather:dashboard' %}" class="block text-center mt-4 text-blue-100 hover:text-white">
+                    View Forecast <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <!-- Active Loans -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Active Loans</h2>
+                </div>
+                <div class="p-6">
+                    {% if active_loans %}
+                        <div class="space-y-4">
+                            {% for loan in active_loans %}
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">{{ loan.loan_product.name }}</p>
+                                            <p class="text-sm text-gray-500">KES {{ loan.outstanding_amount|floatformat:0 }} remaining</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span class="text-gray-500">Repaid</span>
+                                            <span class="text-gray-700">{{ loan.progress_percentage|floatformat:0 }}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2">
+                                            <div class="bg-green-600 h-2 rounded-full" style="width: {{ loan.progress_percentage }}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-gray-500">No active loans</p>
+                            <a href="{% url 'finance:loan_list' %}" class="text-green-600 hover:text-green-700 text-sm mt-2 inline-block">Apply for a loan</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="bg-white rounded-xl shadow-md">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-bold text-gray-800">Quick Links</h2>
+                </div>
+                <div class="p-4">
+                    <nav class="space-y-2">
+                        <a href="{% url 'farmers:profile' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-user w-6 text-green-600"></i>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="{% url 'farmers:parcel_list' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-map w-6 text-green-600"></i>
+                            <span>Farm Parcels</span>
+                        </a>
+                        <a href="{% url 'crops:livestock_list' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-cow w-6 text-green-600"></i>
+                            <span>Livestock</span>
+                        </a>
+                        <a href="{% url 'marketplace:my_listings' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-clipboard-list w-6 text-green-600"></i>
+                            <span>My Listings</span>
+                        </a>
+                        <a href="{% url 'analytics:dashboard' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-chart-line w-6 text-green-600"></i>
+                            <span>Analytics</span>
+                        </a>
+                        <a href="{% url 'advisory:tele_vet_consult' %}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                            <i class="fas fa-user-md w-6 text-green-600"></i>
+                            <span>Vet Consultation</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
