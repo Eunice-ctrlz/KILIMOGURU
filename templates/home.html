@@ -2,52 +2,549 @@
 
 {% block title %}KILIMO GURU - Smart Agriculture for Kenya{% endblock %}
 
+{% block extra_css %}
+<style>
+    /* Organic Hero Section */
+    .hero-organic {
+       /* We list the pattern first, then the gradient. This layers them. */
+    background: 
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(135deg, #015420b9 0%, #145b2fe8 65%, #735240 100%) !important;
+    
+    position: relative;
+    overflow: hidden;
+}
+    
+    .hero-organic::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 C20 0 0 20 0 50 C0 80 20 100 50 100 C80 100 100 80 100 50 C100 20 80 0 50 0 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='2'/%3E%3C/svg%3E");
+        background-size: 200px 200px;
+        
+    }
+    
+    @keyframes drift {
+        from { transform: translateX(0); }
+        to { transform: translateX(-200px); }
+    }
+    
+    /* Floating Cards with Earth Tones */
+    .floating-card-organic {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: floatOrganic 5s ease-in-out infinite;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(162, 124, 94, 0.2);
+    }
+    
+    .floating-card-organic:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 25px 50px -12px rgba(22, 163, 74, 0.25);
+        border-color: #16a34a;
+    }
+    
+    .floating-card-organic:nth-child(2) {
+        animation-delay: -2.5s;
+    }
+    
+    @keyframes floatOrganic {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(1deg); }
+    }
+    
+    /* Stats with Organic Colors */
+    .stat-number-organic {
+        background: linear-gradient(135deg, #fffc4a 0%, #8b654d 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+        display: inline-block;
+    }
+    
+    /* Feature Cards with Organic Theme */
+    .feature-card-organic {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
+        border: 1px solid #efe9e1;
+    }
+    
+    .feature-card-organic::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(22, 163, 74, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+    
+    .feature-card-organic:hover::before {
+        left: 100%;
+    }
+    
+    .feature-card-organic:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 25px 50px -12px rgba(22, 163, 74, 0.15);
+        border-color: #dcfce7;
+    }
+    
+    .feature-icon-wrapper-organic {
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    }
+    
+    .feature-card-organic:hover .feature-icon-wrapper-organic {
+        transform: scale(1.1) rotate(5deg);
+        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    }
+    
+    .feature-card-organic:hover .feature-icon-wrapper-organic i {
+        color: white;
+    }
+    
+    .feature-link-organic {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        overflow: hidden;
+        color: #16a34a;
+        font-weight: 600;
+    }
+    
+    .feature-link-organic::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #16a34a, #a27c5e);
+        transition: width 0.3s ease;
+    }
+    
+    .feature-card-organic:hover .feature-link-organic::after {
+        width: 100%;
+    }
+    
+    /* Price Cards with Earth Accents */
+    .price-card-organic {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
+        border: 2px solid transparent;
+    }
+    
+    .price-card-organic::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        padding: 2px;
+        background: linear-gradient(135deg, #16a34a, #a27c5e, #16a34a);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .price-card-organic:hover::after {
+        opacity: 1;
+    }
+    
+    .price-card-organic:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px -10px rgba(22, 163, 74, 0.2);
+    }
+    
+    .trend-badge-organic {
+        transition: all 0.3s ease;
+    }
+    
+    .price-card-organic:hover .trend-badge-organic {
+        transform: scale(1.1);
+    }
+    
+    /* Steps with Organic Connector */
+    .step-connector-organic {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #16a34a 0%, #a27c5e 50%, #16a34a 100%);
+        background-size: 200% 100%;
+        transform: translateX(50%);
+        z-index: 0;
+        opacity: 0.3;
+        animation: flowLine 3s linear infinite;
+    }
+    
+    @keyframes flowLine {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 200% 0%; }
+    }
+    
+    @media (max-width: 768px) {
+        .step-connector-organic {
+            display: none;
+        }
+    }
+    
+    .step-number-organic {
+        position: relative;
+        z-index: 10;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.4);
+    }
+    
+    .step-item-organic:hover .step-number-organic {
+        transform: scale(1.15);
+        box-shadow: 0 0 30px rgba(22, 163, 74, 0.6);
+    }
+    
+    .step-item-organic {
+        position: relative;
+    }
+    
+    .step-content-organic {
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+    
+    .step-item-organic:hover .step-content-organic {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+    
+    /* Testimonial Cards with Organic Feel */
+    .testimonial-card-organic {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        background: white;
+        border: 1px solid #efe9e1;
+    }
+    
+    .testimonial-card-organic:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 0 30px 60px -15px rgba(22, 163, 74, 0.15);
+        border-color: #dcfce7;
+    }
+    
+    .testimonial-card-organic::before {
+        content: '"';
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 6rem;
+        color: #16a34a;
+        opacity: 0.08;
+        font-family: serif;
+        line-height: 1;
+        transition: all 0.3s ease;
+    }
+    
+    .testimonial-card-organic:hover::before {
+        opacity: 0.15;
+        transform: scale(1.2) rotate(-10deg);
+        color: #a27c5e;
+    }
+    
+    .star-rating-organic i {
+        transition: all 0.2s ease;
+        color: #fbbf24;
+    }
+    
+    .testimonial-card-organic:hover .star-rating-organic i {
+        animation: starPulseOrganic 0.5s ease forwards;
+    }
+    
+    @keyframes starPulseOrganic {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); color: #f59e0b; }
+    }
+    
+    .author-image-organic {
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+        background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #16a34a, #a27c5e) border-box;
+    }
+    
+    .testimonial-card-organic:hover .author-image-organic {
+        transform: scale(1.1);
+        box-shadow: 0 10px 20px -5px rgba(22, 163, 74, 0.3);
+    }
+    
+    /* CTA Section with Organic Gradient */
+    .cta-organic {
+        background: linear-gradient(135deg, #166534 0%, #14532d 50%, #15803d 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-organic::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 20% 50%, rgba(162, 123, 94, 0.477) 0%, transparent 50%),
+                          radial-gradient(circle at 80% 80%, rgb(19, 146, 66) 0%, transparent 50%);
+    }
+    
+    .cta-button-organic {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: white;
+        color: #166534;
+    }
+    
+    .cta-button-organic::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(22, 163, 74, 0.1);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .cta-button-organic:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .cta-button-organic:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px -5px rgba(255, 255, 255, 0.3);
+        color: #15803d;
+    }
+    
+    .cta-outline-organic {
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: 2px solid white;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    
+    .cta-outline-organic::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: white;
+        transition: left 0.3s ease;
+        z-index: -1;
+    }
+    
+    .cta-outline-organic:hover::before {
+        left: 0;
+    }
+    
+    .cta-outline-organic:hover {
+        color: #166534;
+    }
+    
+    /* Partners Marquee */
+    .partners-track-organic {
+        display: flex;
+        animation: scroll 30s linear infinite;
+    }
+    
+    .partners-track-organic:hover {
+        animation-play-state: paused;
+    }
+    
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .partner-logo-organic {
+        transition: all 0.3s ease;
+        filter: grayscale(100%) sepia(20%);
+        opacity: 0.6;
+        color: #735240;
+    }
+    
+    .partner-logo-organic:hover {
+        filter: grayscale(0%) sepia(0%);
+        opacity: 1;
+        color: #16a34a;
+        transform: scale(1.1);
+    }
+    
+    /* Glow Effect */
+    .btn-glow-organic {
+        position: relative;
+    }
+    
+    .btn-glow-organic::after {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(135deg, #16a34a, #a27c5e, #16a34a);
+        border-radius: inherit;
+        z-index: -1;
+        opacity: 0;
+        filter: blur(10px);
+        transition: opacity 0.3s ease;
+    }
+    
+    .btn-glow-organic:hover::after {
+        opacity: 0.7;
+    }
+    
+    /* Live Indicator */
+    .live-indicator-organic {
+        position: relative;
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+    
+    .live-indicator-organic::before {
+        content: '';
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #ef4444;
+        border-radius: 50%;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        animation: pulseLive 2s infinite;
+    }
+    
+    @keyframes pulseLive {
+        0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+        50% { opacity: 0.7; transform: translateY(-50%) scale(1.2); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    }
+    
+    /* Gradient Text Animation */
+    .gradient-text-animated-organic {
+        background: linear-gradient(90deg, #16a34a, #a27c5e, #16a34a);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shineOrganic 4s linear infinite;
+    }
+    
+    @keyframes shineOrganic {
+        to { background-position: 200% center; }
+    }
+    
+    /* Hero Image Container */
+    .hero-image-container-organic {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    .hero-image-container-organic:hover {
+        transform: rotateY(-5deg) rotateX(5deg) scale(1.02);
+    }
+    
+    /* Decorative Elements */
+    .deco-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.4;
+        pointer-events: none;
+    }
+    
+    .deco-leaf {
+        position: absolute;
+        opacity: 0.1;
+        pointer-events: none;
+        color: #004a1b;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
-<section class="gradient-bg text-white py-16 md:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="hero-organic hero-pattern-organic text-white py-20 md:py-28 relative overflow-hidden">
+    <!-- Decorative Circles -->
+    <div class="deco-circle w-96 h-96 bg-leaf-400 -top-20 -left-20 animate-float-organic"></div>
+    <div class="deco-circle w-80 h-80 bottom-0 right-0 animate-float-organic" style="background-color: #8b654d; opacity: 0.2; animation-delay: 2s;"></div>
+    <div class="deco-circle w-64 h-64 bg-yellow-400/30 top-1/2 left-1/2 animate-float-organic" style="animation-delay: 4s;"></div>
+    
+    <!-- Leaf Decorations -->
+    <i class="fas fa-leaf deco-leaf text-9xl top-20 left-10 rotate-45"></i>
+    <i class="fas fa-seedling deco-leaf text-8xl bottom-20 right-20 -rotate-12"></i>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div class="animate-fade-in">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    Smart Agriculture for <span class="text-yellow-300">Kenyan Farmers</span>
+                <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 border border-white/20 hover:bg-white/20 transition-all cursor-pointer group">
+                    <span class="w-2 h-2 bg-yellow-400 rounded-full mr-2 animate-pulse"></span>
+                    <span class="text-sm font-medium">Now serving all 47 counties</span>
+                    <i class="fas fa-arrow-right ml-2 text-xs group-hover:translate-x-1 transition-transform"></i>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight font-display">
+                    Smart Agriculture for <span class="text-yellow-300 relative inline-block">
+                        Kenyan Farmers
+                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-300 opacity-60" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.00025 6.99997C25.7509 9.37499 85.6269 6.86078 198.501 2.00028" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                    </span>
                 </h1>
-                <p class="text-xl text-green-100 mb-8">
+                <p class="text-xl text-green-100 mb-8 leading-relaxed max-w-lg">
                     Access weather forecasts, market prices, crop management tools, 
                     M-Pesa financing, and expert advisory - all in one platform.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
                     {% if user.is_authenticated %}
                         {% if user.is_farmer %}
-                            <a href="{% url 'farmers:dashboard' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
-                                <i class="fas fa-chart-line mr-2"></i>Go to Dashboard
+                            <a href="{% url 'farmers:dashboard' %}" class="btn-primary-organic btn-glow-organic text-white px-8 py-4 rounded-xl font-semibold text-center group relative overflow-hidden shadow-lg">
+                                <span class="relative z-10 flex items-center justify-center">
+                                    <i class="fas fa-chart-line mr-2 group-hover:scale-110 transition-transform"></i>Go to Dashboard
+                                </span>
                             </a>
                         {% else %}
-                            <a href="{% url 'marketplace:buyer_dashboard' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
-                                <i class="fas fa-shopping-cart mr-2"></i>Browse Marketplace
+                            <a href="{% url 'marketplace:buyer_dashboard' %}" class="btn-primary-organic btn-glow-organic text-white px-8 py-4 rounded-xl font-semibold text-center group shadow-lg">
+                                <span class="relative z-10 flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2 group-hover:scale-110 transition-transform"></i>Browse Marketplace
+                                </span>
                             </a>
                         {% endif %}
                     {% else %}
-                        <a href="{% url 'accounts:register_farmer' %}" class="btn-primary text-white px-8 py-4 rounded-lg font-semibold text-center">
-                            <i class="fas fa-user-plus mr-2"></i>Register as Farmer
+                        <a href="{% url 'accounts:register_farmer' %}" class="btn-primary-organic btn-glow-organic text-white px-8 py-4 rounded-xl font-semibold text-center group relative overflow-hidden shadow-lg">
+                            <span class="relative z-10 flex items-center justify-center">
+                                <i class="fas fa-user-plus mr-2 group-hover:rotate-12 transition-transform"></i>Register as Farmer
+                            </span>
                         </a>
-                        <a href="{% url 'accounts:register_buyer' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold text-center hover:bg-green-50 transition">
-                            <i class="fas fa-store mr-2"></i>Register as Buyer
+                        <a href="{% url 'accounts:register_buyer' %}" class="bg-white text-leaf-800 px-8 py-4 rounded-xl font-semibold text-center hover:bg-earth-50 transition-all hover:shadow-lg hover:shadow-white/20 group border-2 border-white/30">
+                            <i class="fas fa-store mr-2 group-hover:scale-110 transition-transform"></i>Register as Buyer
                         </a>
                     {% endif %}
                 </div>
                 
                 <!-- Stats -->
                 <div class="grid grid-cols-3 gap-6 mt-12">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-yellow-300">50K+</div>
-                        <div class="text-sm text-green-100">Farmers</div>
+                    <div class="text-center stat-item cursor-default group">
+                        <div class="text-3xl md:text-4xl font-bold stat-number-organic mb-1 group-hover:scale-110 transition-transform" data-value="50K+">50K+</div>
+                        <div class="text-sm text-green-100">Active Farmers</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-yellow-300">47</div>
-                        <div class="text-sm text-green-100">Counties</div>
+                    <div class="text-center stat-item cursor-default group">
+                        <div class="text-3xl md:text-4xl font-bold stat-number-organic mb-1 group-hover:scale-110 transition-transform" data-value="47">47</div>
+                        <div class="text-sm text-green-100">Counties Covered</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-yellow-300">KES 2B+</div>
+                    <div class="text-center stat-item cursor-default group">
+                        <div class="text-3xl md:text-4xl font-bold stat-number-organic mb-1 group-hover:scale-110 transition-transform" data-value="KES 2B+">KES 2B+</div>
                         <div class="text-sm text-green-100">Transactions</div>
                     </div>
                 </div>
@@ -55,35 +552,40 @@
             
             <!-- Hero Image -->
             <div class="hidden md:block">
-                <div class="relative">
-                    <div class="absolute inset-0 bg-green-400 rounded-3xl transform rotate-3 opacity-20"></div>
-                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=500&fit=crop" 
+                <div class="hero-image-container-organic relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-leaf-400 to-earth-400 rounded-3xl transform rotate-3 opacity-30 blur-sm"></div>
+                    <img src="https://images.unsplash.com/photo-1594987057733-1fb3fe5707c9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2F0dGxlJTIwZmFybXxlbnwwfHwwfHx8MA%3D%3D" 
                          alt="Kenyan Farmer" 
-                         class="relative rounded-3xl shadow-2xl w-full object-cover">
+                         class="relative rounded-3xl shadow-2xl w-full object-cover hover:shadow-leaf-500/30 transition-shadow duration-500 border-4 border-white/20">
                     
                     <!-- Floating Cards -->
-                    <div class="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-lg">
+                    <div class="floating-card-organic absolute -bottom-6 -left-6 rounded-xl p-4 shadow-xl cursor-pointer">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-cloud-sun text-green-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-full flex items-center justify-center">
+                                <i class="fas fa-cloud-sun text-leaf-600 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-500">Weather</div>
-                                <div class="font-semibold text-gray-800">24°C Sunny</div>
+                                <div class="text-sm text-earth-500">Weather Update</div>
+                                <div class="font-semibold text-earth-800">24°C Sunny</div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="absolute -top-6 -right-6 bg-white rounded-xl p-4 shadow-lg">
+                    <div class="floating-card-organic absolute -top-6 -right-6 rounded-xl p-4 shadow-xl cursor-pointer" style="animation-delay: -2.5s;">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <div class="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center">
                                 <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
                             </div>
                             <div>
-                                <div class="text-sm text-gray-500">Maize Price</div>
-                                <div class="font-semibold text-gray-800">KES 3,500/bag</div>
+                                <div class="text-sm text-earth-500">Maize Price</div>
+                                <div class="font-semibold text-earth-800">KES 3,500/bag</div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Additional Floating Badge -->
+                    <div class="floating-card-organic absolute bottom-20 -right-4 bg-gradient-to-r from-leaf-600 to-leaf-700 text-white rounded-lg px-4 py-2 shadow-xl text-sm font-medium" style="animation-delay: -1.5s;">
+                        <i class="fas fa-check-circle mr-1"></i> Verified Market
                     </div>
                 </div>
             </div>
@@ -92,13 +594,16 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-16 md:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                Everything You Need to <span class="gradient-text">Succeed</span>
+<section class="py-20 md:py-28 leaf-pattern relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-leaf-50/50 to-transparent opacity-70 pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16 reveal-organic">
+            <span class="inline-block px-4 py-1 bg-leaf-100 text-leaf-800 rounded-full text-sm font-semibold mb-4 border border-leaf-200">Our Services</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-earth-900 mb-4 font-display">
+                Everything You Need to <span class="gradient-text-animated-organic">Succeed</span>
             </h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
+            <p class="text-earth-600 max-w-2xl mx-auto text-lg">
                 KILIMO GURU provides comprehensive tools and services to help Kenyan farmers 
                 increase productivity, access markets, and improve their livelihoods.
             </p>
@@ -106,92 +611,92 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Feature 1 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-cloud-sun-rain text-green-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-cloud-sun-rain text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Weather & Climate Alerts</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">Weather & Climate Alerts</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Get real-time weather forecasts, drought warnings, and planting advisories 
                     tailored to your location via SMS and app notifications.
                 </p>
-                <a href="{% url 'weather:dashboard' %}" class="text-green-600 font-medium hover:text-green-700">
-                    Check Weather <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'weather:dashboard' %}" class="feature-link-organic">
+                    Check Weather <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
             
             <!-- Feature 2 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-store text-blue-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group" style="transition-delay: 0.1s;">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-store text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Marketplace & Prices</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">Marketplace & Prices</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Sell your produce directly to buyers, access real-time market prices from 
                     Nairobi, Mombasa, and other major markets across Kenya.
                 </p>
-                <a href="{% url 'marketplace:produce_list' %}" class="text-blue-600 font-medium hover:text-blue-700">
-                    Browse Marketplace <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'marketplace:produce_list' %}" class="feature-link-organic">
+                    Browse Marketplace <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
             
             <!-- Feature 3 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-mobile-alt text-yellow-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group" style="transition-delay: 0.2s;">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-mobile-alt text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">M-Pesa Integration</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">M-Pesa Integration</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Access loans, make payments, receive money for your produce, and 
                     buy insurance - all through M-Pesa directly on the platform.
                 </p>
-                <a href="{% url 'finance:dashboard' %}" class="text-yellow-600 font-medium hover:text-yellow-700">
-                    Access Finance <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'finance:dashboard' %}" class="feature-link-organic">
+                    Access Finance <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
             
             <!-- Feature 4 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-seedling text-purple-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-seedling text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Crop Management</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">Crop Management</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Track your crops from planting to harvest, get AI-powered pest and disease 
                     detection, and access personalized planting calendars.
                 </p>
-                <a href="{% url 'crops:my_crops' %}" class="text-purple-600 font-medium hover:text-purple-700">
-                    Manage Crops <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'crops:my_crops' %}" class="feature-link-organic">
+                    Manage Crops <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
             
             <!-- Feature 5 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-graduation-cap text-red-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group" style="transition-delay: 0.1s;">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-graduation-cap text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Expert Advisory</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">Expert Advisory</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Learn from agricultural experts through articles, webinars, and one-on-one 
                     consultations. Available in English, Swahili, and local languages.
                 </p>
-                <a href="{% url 'advisory:home' %}" class="text-red-600 font-medium hover:text-red-700">
-                    Get Advice <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'advisory:home' %}" class="feature-link-organic">
+                    Get Advice <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
             
             <!-- Feature 6 -->
-            <div class="card-hover bg-white rounded-2xl p-8 shadow-lg">
-                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
-                    <i class="fas fa-chart-pie text-indigo-600 text-2xl"></i>
+            <div class="feature-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer group" style="transition-delay: 0.2s;">
+                <div class="feature-icon-wrapper-organic w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                    <i class="fas fa-chart-pie text-leaf-600 text-2xl transition-colors"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Analytics & Reports</h3>
-                <p class="text-gray-600 mb-4">
+                <h3 class="text-xl font-bold text-earth-800 mb-3 group-hover:text-leaf-700 transition-colors">Analytics & Reports</h3>
+                <p class="text-earth-600 mb-4 leading-relaxed">
                     Track your farm's performance with detailed analytics, yield forecasts, 
                     profitability reports, and data-driven recommendations.
                 </p>
-                <a href="{% url 'analytics:dashboard' %}" class="text-indigo-600 font-medium hover:text-indigo-700">
-                    View Analytics <i class="fas fa-arrow-right ml-1"></i>
+                <a href="{% url 'analytics:dashboard' %}" class="feature-link-organic">
+                    View Analytics <i class="fas fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </a>
             </div>
         </div>
@@ -199,213 +704,287 @@
 </section>
 
 <!-- Market Prices Section -->
-<section class="bg-gray-100 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+<section class="bg-earth-100/50 py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-leaf-50/50 via-transparent to-leaf-50/50 opacity-70"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 reveal-organic">
             <div>
-                <h2 class="text-3xl font-bold text-gray-800">Today's Market Prices</h2>
-                <p class="text-gray-600 mt-2">Real-time prices from major markets across Kenya</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-earth-900 flex items-center gap-3 font-display">
+                    Today's Market Prices
+                    <span class="live-indicator-organic text-xs px-3 py-1 rounded-full font-medium flex items-center gap-2 pr-4">
+                        LIVE
+                    </span>
+                </h2>
+                <p class="text-earth-600 mt-2 text-lg">Real-time prices from major markets across Kenya</p>
             </div>
-            <a href="{% url 'marketplace:prices' %}" class="mt-4 md:mt-0 text-green-600 font-medium hover:text-green-700">
-                View All Prices <i class="fas fa-arrow-right ml-1"></i>
+            <a href="{% url 'marketplace:prices' %}" class="mt-4 md:mt-0 group text-leaf-700 font-medium hover:text-leaf-800 flex items-center gap-2 bg-white px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all border border-earth-200">
+                View All Prices 
+                <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
             </a>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Price Card 1 -->
-            <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="price-card-organic rounded-2xl p-6 shadow-md cursor-pointer reveal-organic bg-white">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="font-semibold text-gray-800">Maize</h4>
-                        <p class="text-sm text-gray-500">90kg Bag</p>
+                        <h4 class="font-bold text-earth-800 text-lg">Maize</h4>
+                        <p class="text-sm text-earth-500">90kg Bag</p>
                     </div>
-                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">+2.5%</span>
+                    <span class="trend-badge-organic bg-leaf-100 text-leaf-700 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1 border border-leaf-200">
+                        <i class="fas fa-arrow-up text-xs"></i> +2.5%
+                    </span>
                 </div>
-                <div class="text-2xl font-bold text-gray-800">KES 3,500</div>
-                <p class="text-sm text-gray-500 mt-1">Nairobi Market</p>
+                <div class="text-3xl font-bold text-earth-800 mb-1">KES 3,500</div>
+                <p class="text-sm text-earth-500 flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt text-leaf-500"></i> Nairobi Market
+                </p>
+                <div class="mt-4 pt-4 border-t border-earth-100">
+                    <div class="flex justify-between text-xs text-earth-500 mb-1">
+                        <span>Low: KES 3,200</span>
+                        <span>High: KES 3,800</span>
+                    </div>
+                    <div class="w-full bg-earth-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-leaf-500 to-leaf-600 h-2 rounded-full" style="width: 65%"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Price Card 2 -->
-            <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="price-card-organic rounded-2xl p-6 shadow-md cursor-pointer reveal-organic bg-white" style="transition-delay: 0.1s;">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="font-semibold text-gray-800">Beans</h4>
-                        <p class="text-sm text-gray-500">90kg Bag</p>
+                        <h4 class="font-bold text-earth-800 text-lg">Beans</h4>
+                        <p class="text-sm text-earth-500">90kg Bag</p>
                     </div>
-                    <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">-1.2%</span>
+                    <span class="trend-badge-organic bg-red-100 text-red-700 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1 border border-red-200">
+                        <i class="fas fa-arrow-down text-xs"></i> -1.2%
+                    </span>
                 </div>
-                <div class="text-2xl font-bold text-gray-800">KES 8,200</div>
-                <p class="text-sm text-gray-500 mt-1">Nairobi Market</p>
+                <div class="text-3xl font-bold text-earth-800 mb-1">KES 8,200</div>
+                <p class="text-sm text-earth-500 flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt text-leaf-500"></i> Nairobi Market
+                </p>
+                <div class="mt-4 pt-4 border-t border-earth-100">
+                    <div class="flex justify-between text-xs text-earth-500 mb-1">
+                        <span>Low: KES 7,800</span>
+                        <span>High: KES 8,500</span>
+                    </div>
+                    <div class="w-full bg-earth-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full" style="width: 45%"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Price Card 3 -->
-            <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="price-card-organic rounded-2xl p-6 shadow-md cursor-pointer reveal-organic bg-white" style="transition-delay: 0.2s;">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="font-semibold text-gray-800">Tomatoes</h4>
-                        <p class="text-sm text-gray-500">Per Crate</p>
+                        <h4 class="font-bold text-earth-800 text-lg">Tomatoes</h4>
+                        <p class="text-sm text-earth-500">Per Crate</p>
                     </div>
-                    <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">+5.0%</span>
+                    <span class="trend-badge-organic bg-leaf-100 text-leaf-700 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1 border border-leaf-200">
+                        <i class="fas fa-arrow-up text-xs"></i> +5.0%
+                    </span>
                 </div>
-                <div class="text-2xl font-bold text-gray-800">KES 1,800</div>
-                <p class="text-sm text-gray-500 mt-1">Mombasa Market</p>
+                <div class="text-3xl font-bold text-earth-800 mb-1">KES 1,800</div>
+                <p class="text-sm text-earth-500 flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt text-leaf-500"></i> Mombasa Market
+                </p>
+                <div class="mt-4 pt-4 border-t border-earth-100">
+                    <div class="flex justify-between text-xs text-earth-500 mb-1">
+                        <span>Low: KES 1,500</span>
+                        <span>High: KES 2,000</span>
+                    </div>
+                    <div class="w-full bg-earth-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-leaf-500 to-leaf-600 h-2 rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
             </div>
             
             <!-- Price Card 4 -->
-            <div class="bg-white rounded-xl p-6 shadow-md">
+            <div class="price-card-organic rounded-2xl p-6 shadow-md cursor-pointer reveal-organic bg-white" style="transition-delay: 0.3s;">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="font-semibold text-gray-800">Potatoes</h4>
-                        <p class="text-sm text-gray-500">Extended Bag</p>
+                        <h4 class="font-bold text-earth-800 text-lg">Potatoes</h4>
+                        <p class="text-sm text-earth-500">Extended Bag</p>
                     </div>
-                    <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">0%</span>
+                    <span class="trend-badge-organic bg-earth-100 text-earth-700 text-xs px-3 py-1 rounded-full font-medium flex items-center gap-1 border border-earth-200">
+                        <i class="fas fa-minus text-xs"></i> 0%
+                    </span>
                 </div>
-                <div class="text-2xl font-bold text-gray-800">KES 2,400</div>
-                <p class="text-sm text-gray-500 mt-1">Nakuru Market</p>
+                <div class="text-3xl font-bold text-earth-800 mb-1">KES 2,400</div>
+                <p class="text-sm text-earth-500 flex items-center gap-1">
+                    <i class="fas fa-map-marker-alt text-leaf-500"></i> Nakuru Market
+                </p>
+                <div class="mt-4 pt-4 border-t border-earth-100">
+                    <div class="flex justify-between text-xs text-earth-500 mb-1">
+                        <span>Low: KES 2,200</span>
+                        <span>High: KES 2,600</span>
+                    </div>
+                    <div class="w-full bg-earth-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-earth-500 to-earth-600 h-2 rounded-full" style="width: 50%"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- How It Works -->
-<section class="py-16 md:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                How <span class="gradient-text">KILIMO GURU</span> Works
+<section class="py-20 md:py-28 relative overflow-hidden bg-white">
+    <div class="absolute inset-0 bg-gradient-to-b from-white via-leaf-50/30 to-white pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16 reveal-organic">
+            <span class="inline-block px-4 py-1 bg-earth-100 text-earth-700 rounded-full text-sm font-semibold mb-4 border border-earth-200">Get Started</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-earth-900 mb-4 font-display">
+                How <span class="gradient-text-animated-organic">KILIMO GURU</span> Works
             </h2>
-            <p class="text-gray-600 max-w-2xl mx-auto">
+            <p class="text-earth-600 max-w-2xl mx-auto text-lg">
                 Getting started is easy. Join thousands of Kenyan farmers already using our platform.
             </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <!-- Connector Line (Desktop) -->
+            <div class="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-gradient-to-r from-leaf-200 via-leaf-400 to-leaf-200"></div>
+            
             <!-- Step 1 -->
-            <div class="text-center">
-                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="text-3xl font-bold text-white">1</span>
+            <div class="step-item-organic text-center reveal-organic cursor-pointer group">
+                <div class="step-number-organic w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
+                    1
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Register</h3>
-                <p class="text-gray-600">
-                    Sign up with your phone number and create your farmer profile in minutes.
-                </p>
+                <div class="step-content-organic bg-white p-6 rounded-2xl shadow-sm border border-earth-100 group-hover:border-leaf-200 transition-colors">
+                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Register</h3>
+                    <p class="text-earth-600">
+                        Sign up with your phone number and create your farmer profile in minutes.
+                    </p>
+                </div>
             </div>
             
             <!-- Step 2 -->
-            <div class="text-center">
-                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="text-3xl font-bold text-white">2</span>
+            <div class="step-item-organic text-center reveal-organic cursor-pointer group" style="transition-delay: 0.1s;">
+                <div class="step-number-organic w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
+                    2
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Add Your Farm</h3>
-                <p class="text-gray-600">
-                    Map your farm, add your crops, and track your farming activities.
-                </p>
+                <div class="step-content-organic bg-white p-6 rounded-2xl shadow-sm border border-earth-100 group-hover:border-leaf-200 transition-colors">
+                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Add Your Farm</h3>
+                    <p class="text-earth-600">
+                        Map your farm, add your crops, and track your farming activities.
+                    </p>
+                </div>
             </div>
             
             <!-- Step 3 -->
-            <div class="text-center">
-                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="text-3xl font-bold text-white">3</span>
+            <div class="step-item-organic text-center reveal-organic cursor-pointer group" style="transition-delay: 0.2s;">
+                <div class="step-number-organic w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
+                    3
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Access Services</h3>
-                <p class="text-gray-600">
-                    Get weather alerts, market prices, loans, and expert advice.
-                </p>
+                <div class="step-content-organic bg-white p-6 rounded-2xl shadow-sm border border-earth-100 group-hover:border-leaf-200 transition-colors">
+                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Access Services</h3>
+                    <p class="text-earth-600">
+                        Get weather alerts, market prices, loans, and expert advice.
+                    </p>
+                </div>
             </div>
             
             <!-- Step 4 -->
-            <div class="text-center">
-                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="text-3xl font-bold text-white">4</span>
+            <div class="step-item-organic text-center reveal-organic cursor-pointer group" style="transition-delay: 0.3s;">
+                <div class="step-number-organic w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-white">
+                    4
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Sell & Earn</h3>
-                <p class="text-gray-600">
-                    List your produce, connect with buyers, and receive M-Pesa payments.
-                </p>
+                <div class="step-content-organic bg-white p-6 rounded-2xl shadow-sm border border-earth-100 group-hover:border-leaf-200 transition-colors">
+                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Sell & Earn</h3>
+                    <p class="text-earth-600">
+                        List your produce, connect with buyers, and receive M-Pesa payments.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Testimonials -->
-<section class="bg-green-50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800">What Farmers Say</h2>
+<section class="bg-leaf-50/50 py-20 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-leaf-200 rounded-full opacity-30 blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 bg-earth-200 rounded-full opacity-30 blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-12 reveal-organic">
+            <span class="inline-block px-4 py-1 bg-white text-leaf-700 rounded-full text-sm font-semibold mb-4 shadow-sm border border-leaf-200">Testimonials</span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-earth-900 font-display">What Farmers Say</h2>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Testimonial 1 -->
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
+            <div class="testimonial-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer">
+                <div class="flex items-center mb-4 star-rating-organic">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-                <p class="text-gray-600 mb-6">
+                <p class="text-earth-600 mb-6 leading-relaxed text-lg">
                     "KILIMO GURU has transformed my farming. I now get better prices for my maize 
                     and the weather alerts help me plan my planting."
                 </p>
                 <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" 
-                         alt="John Kamau" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <img src="https://plus.unsplash.com/premium_photo-1693146325492-cd41eec8491d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwbWFufGVufDB8fDB8fHww" 
+                         alt="John Kamau" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
-                        <div class="font-semibold text-gray-800">John Kamau</div>
-                        <div class="text-sm text-gray-500">Maize Farmer, Kiambu</div>
+                        <div class="font-bold text-earth-800">John Kamau</div>
+                        <div class="text-sm text-earth-500">Maize Farmer, Kiambu</div>
                     </div>
                 </div>
             </div>
             
             <!-- Testimonial 2 -->
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
+            <div class="testimonial-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer" style="transition-delay: 0.1s;">
+                <div class="flex items-center mb-4 star-rating-organic">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-                <p class="text-gray-600 mb-6">
+                <p class="text-earth-600 mb-6 leading-relaxed text-lg">
                     "The M-Pesa loans helped me buy quality seeds and fertilizers. My yield 
                     increased by 40% last season. Highly recommended!"
                 </p>
                 <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" 
-                         alt="Grace Wanjiku" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <img src="https://plus.unsplash.com/premium_photo-1718275464617-e5729813402d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwd29tYW58ZW58MHx8MHx8fDA%3D" 
+                         alt="Grace Wanjiku" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
-                        <div class="font-semibold text-gray-800">Grace Wanjiku</div>
-                        <div class="text-sm text-gray-500">Vegetable Farmer, Nakuru</div>
+                        <div class="font-bold text-earth-800">Grace Wanjiku</div>
+                        <div class="text-sm text-earth-500">Vegetable Farmer, Nakuru</div>
                     </div>
                 </div>
             </div>
             
             <!-- Testimonial 3 -->
-            <div class="bg-white rounded-2xl p-8 shadow-lg">
-                <div class="flex items-center mb-4">
-                    <div class="text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
+            <div class="testimonial-card-organic rounded-2xl p-8 shadow-lg reveal-organic cursor-pointer" style="transition-delay: 0.2s;">
+                <div class="flex items-center mb-4 star-rating-organic">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
                 </div>
-                <p class="text-gray-600 mb-6">
+                <p class="text-earth-600 mb-6 leading-relaxed text-lg">
                     "The pest detection feature saved my tomato farm. I got quick advice from 
                     experts and managed to control the disease in time."
                 </p>
                 <div class="flex items-center">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" 
-                         alt="Peter Ochieng" class="w-12 h-12 rounded-full object-cover mr-4">
+                    <img src="https://media.istockphoto.com/id/2192269481/photo/african-man-worker-standing-side-on-the-road-in-the-village-township.jpg?s=1024x1024&w=is&k=20&c=LzQk-Ehy9dHN3M-9AoVzCJoHNWFl4JcTQi6cYKDDrFw=" 
+                         alt="Peter Ochieng" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
-                        <div class="font-semibold text-gray-800">Peter Ochieng</div>
-                        <div class="text-sm text-gray-500">Tomato Farmer, Kisumu</div>
+                        <div class="font-bold text-earth-800">Peter Ochieng</div>
+                        <div class="text-sm text-earth-500">Tomato Farmer, Kisumu</div>
                     </div>
                 </div>
             </div>
@@ -414,43 +993,156 @@
 </section>
 
 <!-- CTA Section -->
-<section class="gradient-bg py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+<section class="cta-organic py-20 relative overflow-hidden">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-earth-400 opacity-10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <i class="fas fa-leaf absolute top-20 left-20 text-white/5 text-9xl rotate-45"></i>
+        <i class="fas fa-seedling absolute bottom-20 right-20 text-white/5 text-8xl -rotate-12"></i>
+    </div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 reveal-organic font-display">
             Ready to Transform Your Farming?
         </h2>
-        <p class="text-green-100 text-lg mb-8">
+        <p class="text-green-100 text-lg mb-8 reveal-organic text-xl" style="transition-delay: 0.1s;">
             Join over 50,000 Kenyan farmers already using KILIMO GURU to improve their productivity and income.
         </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <div class="flex flex-col sm:flex-row justify-center gap-4 reveal-organic" style="transition-delay: 0.2s;">
             {% if user.is_authenticated %}
-                <a href="{% url 'farmers:dashboard' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition">
-                    Go to Dashboard
+                <a href="{% url 'farmers:dashboard' %}" class="cta-button-organic px-8 py-4 rounded-xl font-semibold transition relative overflow-hidden shadow-lg">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Go to Dashboard <i class="fas fa-arrow-right"></i>
+                    </span>
                 </a>
             {% else %}
-                <a href="{% url 'accounts:register_farmer' %}" class="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition">
-                    Get Started Free
+                <a href="{% url 'accounts:register_farmer' %}" class="cta-button-organic px-8 py-4 rounded-xl font-semibold transition relative overflow-hidden group shadow-lg">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Get Started Free <i class="fas fa-rocket group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                    </span>
                 </a>
-                <a href="{% url 'accounts:login' %}" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition">
-                    Login
+                <a href="{% url 'accounts:login' %}" class="cta-outline-organic px-8 py-4 rounded-xl font-semibold transition relative overflow-hidden">
+                    <span class="relative z-10">Login</span>
                 </a>
             {% endif %}
+        </div>
+        
+        <!-- Trust Badges -->
+        <div class="mt-12 flex flex-wrap justify-center gap-6 text-green-100 text-sm reveal-organic" style="transition-delay: 0.3s;">
+            <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm"><i class="fas fa-shield-alt text-yellow-300"></i> Secure & Trusted</span>
+            <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm"><i class="fas fa-check-circle text-yellow-300"></i> Free Registration</span>
+            <span class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm"><i class="fas fa-headset text-yellow-300"></i> 24/7 Support</span>
         </div>
     </div>
 </section>
 
 <!-- Partners Section -->
-<section class="py-12 bg-white">
+<section class="py-16 bg-white overflow-hidden border-t border-earth-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-center text-gray-500 mb-8">Trusted by leading organizations</p>
-        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60">
-            <div class="text-2xl font-bold text-gray-400">KIAMIS</div>
-            <div class="text-2xl font-bold text-gray-400">KALRO</div>
-            <div class="text-2xl font-bold text-gray-400">AFA</div>
-            <div class="text-2xl font-bold text-gray-400">KMD</div>
-            <div class="text-2xl font-bold text-gray-400">Safaricom</div>
-            <div class="text-2xl font-bold text-gray-400">Equity Bank</div>
+        <p class="text-center text-earth-500 mb-8 text-sm uppercase tracking-widest font-semibold">Trusted by leading organizations</p>
+        
+        <div class="relative">
+            <div class="partners-track-organic flex items-center gap-12 md:gap-16">
+                <!-- First Set -->
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KIAMIS</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KALRO</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">AFA</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KMD</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Safaricom</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Equity Bank</div>
+                <!-- Duplicate Set for Seamless Loop -->
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KIAMIS</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KALRO</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">AFA</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KMD</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Safaricom</div>
+                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Equity Bank</div>
+            </div>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Scroll Reveal Animation
+    const revealElements = document.querySelectorAll('.reveal-organic');
+    
+    const revealOnScroll = () => {
+        revealElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (elementTop < windowHeight - 100) {
+                element.classList.add('active');
+            }
+        });
+    };
+    
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+    
+    // Smooth Counter Animation for Stats
+    const animateCounter = (element, target, suffix = '') => {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target + suffix;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current) + suffix;
+            }
+        }, 30);
+    };
+    
+    // Trigger counter animation when stats are visible
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumbers = entry.target.querySelectorAll('.stat-number-organic');
+                statNumbers.forEach(stat => {
+                    const value = stat.getAttribute('data-value');
+                    if (value.includes('K')) {
+                        stat.textContent = '0';
+                        animateCounter(stat, 50, 'K+');
+                    } else if (value.includes('B')) {
+                        stat.textContent = 'KES 0';
+                        animateCounter(stat, 2, 'B+');
+                    } else {
+                        stat.textContent = '0';
+                        animateCounter(stat, 47, '');
+                    }
+                });
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    const statsSection = document.querySelector('.stat-item')?.parentElement;
+    if (statsSection) {
+        statsObserver.observe(statsSection);
+    }
+    
+    // Parallax Effect for Hero Image
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroImage = document.querySelector('.hero-image-container-organic');
+        if (heroImage) {
+            heroImage.style.transform = `translateY(${scrolled * 0.1}px)`;
+        }
+    });
+    
+    // Interactive Floating Cards
+    document.querySelectorAll('.floating-card-organic').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.animationPlayState = 'paused';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.animationPlayState = 'running';
+        });
+    });
+</script>
 {% endblock %}
