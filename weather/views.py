@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import datetime, timedelta
+from django.db import models  # <- added for aggregation
 
 from .models import WeatherData, WeatherForecast, ClimateAlert, UserWeatherSubscription
 from .forms import WeatherSubscriptionForm
@@ -17,11 +18,19 @@ class WeatherDashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Get major counties weather
+        # Get major counties weather (SQLite-compatible)
         major_counties = ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret']
+        
+        latest_records = (
+            WeatherData.objects
+            .filter(county__in=major_counties)
+            .values('county')
+            .annotate(latest_timestamp=models.Max('timestamp'))
+        )
+        
         context['major_weather'] = WeatherData.objects.filter(
-            county__in=major_counties
-        ).order_by('-timestamp').distinct('county')[:5]
+            timestamp__in=[item['latest_timestamp'] for item in latest_records]
+        ).order_by('-timestamp')[:5]
         
         # Active alerts
         context['active_alerts'] = ClimateAlert.objects.filter(
