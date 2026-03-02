@@ -4,113 +4,145 @@
 
 {% block content %}
 <!-- Header -->
-<div class="gradient-bg text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+<div class="relative overflow-hidden bg-[#16a34a] text-white py-16">
+    <!-- Decorative Leaves -->
+    <div class="absolute top-0 left-0 w-64 h-64 opacity-10">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q130,60 120,100 Q110,140 80,160 Q50,140 40,100 Q30,60 60,20 Q80,0 100,20 Z" transform="rotate(-15 100 100)"/>
+        </svg>
+    </div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 opacity-10 transform rotate-180">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q130,60 120,100 Q110,140 80,160 Q50,140 40,100 Q30,60 60,20 Q80,0 100,20 Z"/>
+        </svg>
+    </div>
+    <div class="absolute top-10 right-20 w-32 h-32 opacity-5">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q140,50 130,90 Q120,130 90,150 Q60,130 50,90 Q40,50 80,20 Q90,10 100,20 Z" transform="rotate(45 100 100)"/>
+        </svg>
+    </div>
+    <div class="absolute bottom-10 left-20 w-24 h-24 opacity-5 transform -rotate-45">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q140,50 130,90 Q120,130 90,150 Q60,130 50,90 Q40,50 80,20 Q90,10 100,20 Z"/>
+        </svg>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
-                <h1 class="text-3xl md:text-4xl font-bold mb-4">Agricultural Marketplace</h1>
-                <p class="text-green-100 text-lg">Buy and sell fresh produce directly from farmers</p>
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fas fa-leaf text-3xl opacity-80"></i>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Agricultural Marketplace</h1>
+                </div>
+                <p class="text-green-100 text-lg md:text-xl font-light max-w-2xl">Buy and sell fresh produce directly from farmers</p>
             </div>
             {% if user.is_authenticated and user.is_farmer %}
-                <a href="{% url 'marketplace:produce_create' %}" class="mt-4 md:mt-0 bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition">
-                    <i class="fas fa-plus mr-2"></i>List Your Produce
+                <a href="{% url 'marketplace:produce_create' %}" class="group bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white hover:text-[#16a34a] transition-all duration-300 flex items-center gap-2 hover:shadow-xl">
+                    <i class="fas fa-plus transition-transform group-hover:rotate-90"></i>
+                    List Your Produce
                 </a>
             {% endif %}
         </div>
     </div>
+    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-stone-50 to-transparent"></div>
 </div>
 
 <!-- Filters -->
-<div class="bg-white shadow-md">
+<div class="bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
+            <div class="relative group">
                 <input type="text" name="search" value="{{ request.GET.search }}" 
                        placeholder="Search produce..." 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                       class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-[#16a34a]/20 focus:border-[#16a34a] transition-all duration-300 hover:bg-white hover:shadow-md">
             </div>
-            <div>
-                <select name="category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+            <div class="relative">
+                <select name="category" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-[#16a34a]/20 focus:border-[#16a34a] transition-all duration-300 hover:bg-white hover:shadow-md appearance-none cursor-pointer">
                     <option value="">All Categories</option>
                     {% for key, value in categories %}
                         <option value="{{ key }}" {% if request.GET.category == key %}selected{% endif %}>{{ value }}</option>
                     {% endfor %}
                 </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                    <i class="fas fa-chevron-down text-stone-400 text-sm"></i>
+                </div>
             </div>
-            <div>
+            <div class="relative">
                 <input type="text" name="county" value="{{ request.GET.county }}" 
                        placeholder="Filter by county..." 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                       class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-[#16a34a]/20 focus:border-[#16a34a] transition-all duration-300 hover:bg-white hover:shadow-md">
             </div>
-            <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg">
-                <i class="fas fa-filter mr-2"></i>Filter
+            <button type="submit" class="bg-[#16a34a] hover:bg-[#15803d] text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#16a34a]/25 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+                <i class="fas fa-filter"></i>Filter
             </button>
         </form>
     </div>
 </div>
 
 <!-- Listings -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-stone-50 min-h-screen">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {% for listing in listings %}
-            <div class="card-hover bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="relative h-48 bg-gray-100">
+            <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden border border-stone-100 hover:border-[#16a34a]/30 hover:-translate-y-1">
+                <div class="relative h-52 overflow-hidden bg-stone-100">
                     {% if listing.image_1 %}
-                        <img src="{{ listing.image_1.url }}" alt="{{ listing.product_name }}" class="w-full h-full object-cover">
+                        <img src="{{ listing.image_1.url }}" alt="{{ listing.product_name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     {% else %}
-                        <div class="flex items-center justify-center h-full">
-                            <i class="fas fa-image text-gray-300 text-5xl"></i>
+                        <div class="flex items-center justify-center h-full bg-stone-100">
+                            <i class="fas fa-image text-stone-300 text-5xl group-hover:text-stone-400 transition-colors"></i>
                         </div>
                     {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
                     {% if listing.is_organic %}
-                        <span class="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                        <span class="absolute top-3 left-3 bg-[#16a34a]/90 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full font-medium shadow-lg">
                             <i class="fas fa-leaf mr-1"></i>Organic
                         </span>
                     {% endif %}
                     {% if listing.is_negotiable %}
-                        <span class="absolute top-3 right-3 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                        <span class="absolute top-3 right-3 bg-amber-500/90 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full font-medium shadow-lg">
                             Negotiable
                         </span>
                     {% endif %}
                 </div>
                 <div class="p-5">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs text-gray-500">{{ listing.get_category_display }}</span>
-                        <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                        <span class="text-xs text-stone-500 font-medium">{{ listing.get_category_display }}</span>
+                        <span class="text-xs font-semibold text-[#16a34a] bg-[#16a34a]/10 px-2 py-1 rounded-full border border-[#16a34a]/20">
                             {{ listing.get_quality_grade_display }}
                         </span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">{{ listing.product_name }}</h3>
+                    <h3 class="text-lg font-bold text-stone-800 mb-1 group-hover:text-[#16a34a] transition-colors">{{ listing.product_name }}</h3>
                     {% if listing.variety %}
-                        <p class="text-sm text-gray-500 mb-2">{{ listing.variety }}</p>
+                        <p class="text-sm text-stone-500 mb-2">{{ listing.variety }}</p>
                     {% endif %}
                     <div class="flex items-baseline mb-3">
-                        <span class="text-2xl font-bold text-green-600">KES {{ listing.price_per_unit|floatformat:0 }}</span>
-                        <span class="text-gray-500 text-sm ml-1">/ {{ listing.get_unit_display }}</span>
+                        <span class="text-2xl font-bold text-[#16a34a]">KES {{ listing.price_per_unit|floatformat:0 }}</span>
+                        <span class="text-stone-400 text-sm ml-1">/ {{ listing.get_unit_display }}</span>
                     </div>
-                    <div class="flex items-center text-sm text-gray-600 mb-4">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        <span>{{ listing.county }}</span>
+                    <div class="flex items-center text-sm text-stone-600 mb-3 bg-stone-50 p-2 rounded-lg">
+                        <i class="fas fa-map-marker-alt mr-2 text-[#16a34a]"></i>
+                        <span class="truncate">{{ listing.county }}</span>
                     </div>
-                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                        <span><i class="fas fa-box mr-1"></i> {{ listing.quantity_available|floatformat:0 }} {{ listing.get_unit_display }}</span>
-                        <span><i class="fas fa-eye mr-1"></i> {{ listing.view_count }}</span>
+                    <div class="flex items-center justify-between text-sm text-stone-500 mb-4 px-1">
+                        <span class="flex items-center"><i class="fas fa-box mr-1.5 text-stone-400"></i> {{ listing.quantity_available|floatformat:0 }} {{ listing.get_unit_display }}</span>
+                        <span class="flex items-center"><i class="fas fa-eye mr-1.5 text-stone-400"></i> {{ listing.view_count }}</span>
                     </div>
                     <a href="{% url 'marketplace:produce_detail' listing.pk %}" 
-                       class="block w-full text-center btn-primary text-white py-2 rounded-lg">
+                       class="block w-full text-center bg-stone-800 hover:bg-[#16a34a] text-white py-2.5 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#16a34a]/20">
                         View Details
                     </a>
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-12">
-                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-store text-gray-400 text-3xl"></i>
+            <div class="col-span-full flex flex-col items-center justify-center py-20">
+                <div class="w-32 h-32 bg-stone-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                    <i class="fas fa-store text-stone-400 text-4xl"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">No listings found</h3>
-                <p class="text-gray-500 mb-4">Be the first to list your produce!</p>
+                <h3 class="text-2xl font-bold text-stone-700 mb-2">No listings found</h3>
+                <p class="text-stone-500 mb-6 text-center max-w-md">Be the first to list your produce and reach thousands of buyers!</p>
                 {% if user.is_authenticated and user.is_farmer %}
-                    <a href="{% url 'marketplace:produce_create' %}" class="btn-primary text-white px-6 py-3 rounded-lg inline-block">
+                    <a href="{% url 'marketplace:produce_create' %}" class="bg-[#16a34a] hover:bg-[#15803d] text-white px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#16a34a]/25 hover:-translate-y-0.5">
                         List Your Produce
                     </a>
                 {% endif %}
@@ -120,25 +152,25 @@
     
     <!-- Pagination -->
     {% if is_paginated %}
-        <div class="flex justify-center mt-12">
-            <nav class="flex items-center space-x-2">
+        <div class="flex justify-center mt-16">
+            <nav class="flex items-center space-x-2 bg-white p-2 rounded-2xl shadow-sm border border-stone-200">
                 {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-chevron-left"></i>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">
+                        <i class="fas fa-chevron-left text-sm"></i>
                     </a>
                 {% endif %}
                 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <span class="px-4 py-2 bg-green-600 text-white rounded-lg">{{ num }}</span>
+                        <span class="w-10 h-10 flex items-center justify-center bg-[#16a34a] text-white rounded-xl font-medium shadow-lg shadow-[#16a34a]/30">{{ num }}</span>
                     {% else %}
-                        <a href="?page={{ num }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">{{ num }}</a>
+                        <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
                 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-chevron-right"></i>
+                    <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">
+                        <i class="fas fa-chevron-right text-sm"></i>
                     </a>
                 {% endif %}
             </nav>

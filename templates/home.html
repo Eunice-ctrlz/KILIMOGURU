@@ -6,22 +6,19 @@
 <style>
     /* Organic Hero Section */
     .hero-organic {
-       /* We list the pattern first, then the gradient. This layers them. */
-    background: 
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(135deg, #015420b9 0%, #145b2fe8 65%, #735240 100%) !important;
-    
-    position: relative;
-    overflow: hidden;
-}
+        background: 
+            url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg '%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+            linear-gradient(135deg, #015420b9 0%, #145b2fe8 65%, #735240 100%) !important;
+        position: relative;
+        overflow: hidden;
+    }
     
     .hero-organic::before {
         content: '';
         position: absolute;
         inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 C20 0 0 20 0 50 C0 80 20 100 50 100 C80 100 100 80 100 50 C100 20 80 0 50 0 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='2'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg '%3E%3Cpath d='M50 0 C20 0 0 20 0 50 C0 80 20 100 50 100 C80 100 100 80 100 50 C100 20 80 0 50 0 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='2'/%3E%3C/svg%3E");
         background-size: 200px 200px;
-        
     }
     
     @keyframes drift {
@@ -374,15 +371,11 @@
     
     .partner-logo-organic {
         transition: all 0.3s ease;
-        filter: grayscale(100%) sepia(20%);
-        opacity: 0.6;
-        color: #735240;
+        filter: grayscale(100%) opacity(0.6);
     }
     
     .partner-logo-organic:hover {
-        filter: grayscale(0%) sepia(0%);
-        opacity: 1;
-        color: #16a34a;
+        filter: grayscale(0%) opacity(1);
         transform: scale(1.1);
     }
     
@@ -446,7 +439,7 @@
         to { background-position: 200% center; }
     }
     
-    /* Hero Image Container */
+    /* Hero Image Container - CLEAN VERSION */
     .hero-image-container-organic {
         position: relative;
         transform-style: preserve-3d;
@@ -455,6 +448,168 @@
     
     .hero-image-container-organic:hover {
         transform: rotateY(-5deg) rotateX(5deg) scale(1.02);
+    }
+    
+    /* Dual Image Slider Styles - NO WHITE BACKGROUND */
+    .hero-image-slider {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        /* REMOVED background: white; */
+    }
+    
+    .hero-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 1.5s ease-in-out;
+    }
+    
+    .hero-slide.active {
+        opacity: 1;
+    }
+    
+    .hero-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block; /* Remove any default spacing */
+    }
+    
+    /* BACKGROUND GLOW ONLY - Behind the slider */
+    .hero-background-glow {
+        position: absolute;
+        inset: -20px;
+        background: 
+            radial-gradient(ellipse at 30% 30%, rgba(74, 222, 128, 0.3) 0%, transparent 50%),
+            radial-gradient(ellipse at 70% 70%, rgba(34, 197, 94, 0.2) 0%, transparent 50%),
+            radial-gradient(ellipse at center, rgba(22, 163, 74, 0.15) 0%, transparent 70%);
+        filter: blur(30px);
+        z-index: -2;
+        animation: backgroundGlowPulse 4s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    @keyframes backgroundGlowPulse {
+        0%, 100% { 
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        50% { 
+            opacity: 1;
+            transform: scale(1.05);
+        }
+    }
+    
+    /* LED Border Glow - Glowing Green Border around the container */
+    .hero-led-border {
+        position: absolute;
+        inset: -3px;
+        border-radius: 1.6rem;
+        background: linear-gradient(90deg, #16a34a, #4ade80, #16a34a, #22c55e, #16a34a);
+        background-size: 300% 100%;
+        z-index: -1;
+        animation: ledGlow 3s linear infinite;
+        box-shadow: 
+            0 0 20px rgba(22, 163, 74, 0.6),
+            0 0 40px rgba(22, 163, 74, 0.4),
+            0 0 60px rgba(22, 163, 74, 0.2);
+        pointer-events: none;
+    }
+    
+    @keyframes ledGlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 300% 50%; }
+    }
+    
+    /* Corner LED Accents */
+    .led-corner {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 
+            0 0 10px #4ade80,
+            0 0 20px #4ade80,
+            0 0 30px #16a34a;
+        z-index: 10;
+        animation: cornerPulse 1.5s ease-in-out infinite;
+        pointer-events: none;
+    }
+    
+    .led-corner:nth-child(1) { top: 15px; left: 15px; animation-delay: 0s; }
+    .led-corner:nth-child(2) { top: 15px; right: 15px; animation-delay: 0.3s; }
+    .led-corner:nth-child(3) { bottom: 15px; right: 15px; animation-delay: 0.6s; }
+    .led-corner:nth-child(4) { bottom: 15px; left: 15px; animation-delay: 0.9s; }
+    
+    @keyframes cornerPulse {
+        0%, 100% { 
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% { 
+            transform: scale(1.3);
+            opacity: 0.7;
+        }
+    }
+    
+    /* Slide Indicators */
+    .slide-indicators {
+        position: absolute;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 20;
+    }
+    
+    .slide-indicator {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+    }
+    
+    .slide-indicator::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: transparent;
+        border: 2px solid #4ade80;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .slide-indicator.active {
+        background: #4ade80;
+        transform: scale(1.2);
+        box-shadow: 
+            0 0 10px #4ade80,
+            0 0 20px #16a34a;
+    }
+    
+    .slide-indicator.active::before {
+        opacity: 1;
+        animation: indicatorPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes indicatorPulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.5); opacity: 0; }
+    }
+    
+    .slide-indicator:hover {
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
     }
     
     /* Decorative Elements */
@@ -471,6 +626,52 @@
         opacity: 0.1;
         pointer-events: none;
         color: #004a1b;
+    }
+    
+    /* Partner Logo Styles */
+    .partner-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        height: 60px;
+        padding: 0 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .partner-icon-wrapper img {
+        max-height: 40px;
+        max-width: 100px;
+        object-fit: contain;
+        filter: grayscale(100%) opacity(0.6);
+        transition: all 0.3s ease;
+    }
+    
+    .partner-icon-wrapper:hover img {
+        filter: grayscale(0%) opacity(1);
+        transform: scale(1.1);
+    }
+    
+    /* Fallback for text-based logos */
+    .partner-text-logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        transition: all 0.3s ease;
+    }
+    
+    .partner-text-logo.safaricom {
+        color: #00A650;
+        text-shadow: 0 0 10px rgba(0, 166, 80, 0.3);
+    }
+    
+    .partner-text-logo.equity {
+        color: #C41E3A;
+    }
+    
+    .partner-text-logo.kalro {
+        color: #16a34a;
+        font-family: serif;
     }
 </style>
 {% endblock %}
@@ -499,7 +700,7 @@
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight font-display">
                     Smart Agriculture for <span class="text-yellow-300 relative inline-block">
                         Kenyan Farmers
-                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-300 opacity-60" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.00025 6.99997C25.7509 9.37499 85.6269 6.86078 198.501 2.00028" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-yellow-300 opacity-60" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg "><path d="M2.00025 6.99997C25.7509 9.37499 85.6269 6.86078 198.501 2.00028" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
                     </span>
                 </h1>
                 <p class="text-xl text-green-100 mb-8 leading-relaxed max-w-lg">
@@ -550,16 +751,46 @@
                 </div>
             </div>
             
-            <!-- Hero Image -->
+            <!-- Hero Image with Dual Slider - CLEAN WITH BACKGROUND GLOW ONLY -->
             <div class="hidden md:block">
                 <div class="hero-image-container-organic relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-leaf-400 to-earth-400 rounded-3xl transform rotate-3 opacity-30 blur-sm"></div>
-                    <img src="https://images.unsplash.com/photo-1594987057733-1fb3fe5707c9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2F0dGxlJTIwZmFybXxlbnwwfHwwfHx8MA%3D%3D" 
-                         alt="Kenyan Farmer" 
-                         class="relative rounded-3xl shadow-2xl w-full object-cover hover:shadow-leaf-500/30 transition-shadow duration-500 border-4 border-white/20">
+                    <!-- Background Glow ONLY - Behind everything -->
+                    <div class="hero-background-glow"></div>
+                    
+                    <!-- LED Border Glow - Around the container -->
+                    <div class="hero-led-border"></div>
+                    
+                    <!-- Dual Image Slider - NO WHITE BACKGROUND -->
+                    <div class="hero-image-slider">
+                        <!-- LED Corners -->
+                        <div class="led-corner"></div>
+                        <div class="led-corner"></div>
+                        <div class="led-corner"></div>
+                        <div class="led-corner"></div>
+                        
+                        <!-- Slide 1 -->
+                        <div class="hero-slide active" data-slide="0">
+                            <img src="https://images.unsplash.com/photo-1594987057733-1fb3fe5707c9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2F0dGxlJTIwZmFybXxlbnwwfHwwfHx8MA%3D%3D " 
+                                 alt="Kenyan Farmer with Cattle" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- Slide 2 -->
+                        <div class="hero-slide" data-slide="1">
+                            <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFybWVyfGVufDB8fDB8fHww " 
+                                 alt="Farmer in Field" 
+                                 class="w-full h-full object-cover">
+                        </div>
+                        
+                        <!-- Slide Indicators -->
+                        <div class="slide-indicators">
+                            <div class="slide-indicator active" data-slide="0"></div>
+                            <div class="slide-indicator" data-slide="1"></div>
+                        </div>
+                    </div>
                     
                     <!-- Floating Cards -->
-                    <div class="floating-card-organic absolute -bottom-6 -left-6 rounded-xl p-4 shadow-xl cursor-pointer">
+                    <div class="floating-card-organic absolute -bottom-6 -left-6 rounded-xl p-4 shadow-xl cursor-pointer z-20">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 bg-gradient-to-br from-leaf-100 to-leaf-200 rounded-full flex items-center justify-center">
                                 <i class="fas fa-cloud-sun text-leaf-600 text-xl"></i>
@@ -571,7 +802,7 @@
                         </div>
                     </div>
                     
-                    <div class="floating-card-organic absolute -top-6 -right-6 rounded-xl p-4 shadow-xl cursor-pointer" style="animation-delay: -2.5s;">
+                    <div class="floating-card-organic absolute -top-6 -right-6 rounded-xl p-4 shadow-xl cursor-pointer z-20" style="animation-delay: -2.5s;">
                         <div class="flex items-center space-x-3">
                             <div class="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center">
                                 <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
@@ -584,7 +815,7 @@
                     </div>
                     
                     <!-- Additional Floating Badge -->
-                    <div class="floating-card-organic absolute bottom-20 -right-4 bg-gradient-to-r from-leaf-600 to-leaf-700 text-white rounded-lg px-4 py-2 shadow-xl text-sm font-medium" style="animation-delay: -1.5s;">
+                    <div class="floating-card-organic absolute bottom-20 -right-4 bg-gradient-to-r from-leaf-600 to-leaf-700 text-white rounded-lg px-4 py-2 shadow-xl text-sm font-medium z-20" style="animation-delay: -1.5s;">
                         <i class="fas fa-check-circle mr-1"></i> Verified Market
                     </div>
                 </div>
@@ -896,7 +1127,7 @@
                     4
                 </div>
                 <div class="step-content-organic bg-white p-6 rounded-2xl shadow-sm border border-earth-100 group-hover:border-leaf-200 transition-colors">
-                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Sell & Earn</h3>
+                    <h3 class="text-xl font-bold text-earth-800 mb-2 group-hover:text-leaf-700 transition-colors">Earn, Manage and Learn</h3>
                     <p class="text-earth-600">
                         List your produce, connect with buyers, and receive M-Pesa payments.
                     </p>
@@ -934,7 +1165,7 @@
                     and the weather alerts help me plan my planting."
                 </p>
                 <div class="flex items-center">
-                    <img src="https://plus.unsplash.com/premium_photo-1693146325492-cd41eec8491d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwbWFufGVufDB8fDB8fHww" 
+                    <img src="https://plus.unsplash.com/premium_photo-1693146325492-cd41eec8491d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwbWFufGVufDB8fDB8fHww " 
                          alt="John Kamau" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
                         <div class="font-bold text-earth-800">John Kamau</div>
@@ -957,7 +1188,7 @@
                     increased by 40% last season. Highly recommended!"
                 </p>
                 <div class="flex items-center">
-                    <img src="https://plus.unsplash.com/premium_photo-1718275464617-e5729813402d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwd29tYW58ZW58MHx8MHx8fDA%3D" 
+                    <img src="https://plus.unsplash.com/premium_photo-1718275464617-e5729813402d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a2VueWFuJTIwd29tYW58ZW58MHx8MHx8fDA%3D " 
                          alt="Grace Wanjiku" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
                         <div class="font-bold text-earth-800">Grace Wanjiku</div>
@@ -980,7 +1211,7 @@
                     experts and managed to control the disease in time."
                 </p>
                 <div class="flex items-center">
-                    <img src="https://media.istockphoto.com/id/2192269481/photo/african-man-worker-standing-side-on-the-road-in-the-village-township.jpg?s=1024x1024&w=is&k=20&c=LzQk-Ehy9dHN3M-9AoVzCJoHNWFl4JcTQi6cYKDDrFw=" 
+                    <img src="https://media.istockphoto.com/id/2192269481/photo/african-man-worker-standing-side-on-the-road-in-the-village-township.jpg?s=1024x1024&w=is&k=20&c=LzQk-Ehy9dHN3M-9AoVzCJoHNWFl4JcTQi6cYKDDrFw= " 
                          alt="Peter Ochieng" class="author-image-organic w-14 h-14 rounded-full object-cover mr-4">
                     <div>
                         <div class="font-bold text-earth-800">Peter Ochieng</div>
@@ -1037,27 +1268,110 @@
     </div>
 </section>
 
-<!-- Partners Section -->
+<!-- Partners Section with Icons -->
 <section class="py-16 bg-white overflow-hidden border-t border-earth-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-center text-earth-500 mb-8 text-sm uppercase tracking-widest font-semibold">Trusted by leading organizations</p>
         
         <div class="relative">
             <div class="partners-track-organic flex items-center gap-12 md:gap-16">
-                <!-- First Set -->
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KIAMIS</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KALRO</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">AFA</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KMD</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Safaricom</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Equity Bank</div>
+                <!-- First Set - Partner Icons -->
+                <!-- KIAMIS -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-earth-600">
+                        <i class="fas fa-landmark text-3xl"></i>
+                        <span class="font-bold text-lg">KIAMIS</span>
+                    </div>
+                </div>
+                
+                <!-- KALRO -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-seedling text-3xl text-[#16a34a]"></i>
+                        <span class="partner-text-logo kalro">KALRO</span>
+                    </div>
+                </div>
+                
+                <!-- AFA -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-earth-600">
+                        <i class="fas fa-tractor text-3xl"></i>
+                        <span class="font-bold text-lg">AFA</span>
+                    </div>
+                </div>
+                
+                <!-- KMD -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-blue-600">
+                        <i class="fas fa-cloud-sun-rain text-3xl"></i>
+                        <span class="font-bold text-lg">KMD</span>
+                    </div>
+                </div>
+                
+                <!-- Safaricom -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-mobile-alt text-3xl text-[#00A650]"></i>
+                        <span class="partner-text-logo safaricom">Safaricom</span>
+                    </div>
+                </div>
+                
+                <!-- Equity Bank -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-university text-3xl text-[#C41E3A]"></i>
+                        <span class="partner-text-logo equity">Equity</span>
+                    </div>
+                </div>
+                
                 <!-- Duplicate Set for Seamless Loop -->
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KIAMIS</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KALRO</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">AFA</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">KMD</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Safaricom</div>
-                <div class="partner-logo-organic text-2xl font-bold whitespace-nowrap cursor-pointer">Equity Bank</div>
+                <!-- KIAMIS -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-earth-600">
+                        <i class="fas fa-landmark text-3xl"></i>
+                        <span class="font-bold text-lg">KIAMIS</span>
+                    </div>
+                </div>
+                
+                <!-- KALRO -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-seedling text-3xl text-[#16a34a]"></i>
+                        <span class="partner-text-logo kalro">KALRO</span>
+                    </div>
+                </div>
+                
+                <!-- AFA -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-earth-600">
+                        <i class="fas fa-tractor text-3xl"></i>
+                        <span class="font-bold text-lg">AFA</span>
+                    </div>
+                </div>
+                
+                <!-- KMD -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2 text-blue-600">
+                        <i class="fas fa-cloud-sun-rain text-3xl"></i>
+                        <span class="font-bold text-lg">KMD</span>
+                    </div>
+                </div>
+                
+                <!-- Safaricom -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-mobile-alt text-3xl text-[#00A650]"></i>
+                        <span class="partner-text-logo safaricom">Safaricom</span>
+                    </div>
+                </div>
+                
+                <!-- Equity Bank -->
+                <div class="partner-icon-wrapper">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-university text-3xl text-[#C41E3A]"></i>
+                        <span class="partner-text-logo equity">Equity</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1144,5 +1458,52 @@
             this.style.animationPlayState = 'running';
         });
     });
+    
+    // Dual Image Slider Functionality
+    const slides = document.querySelectorAll('.hero-slide');
+    const indicators = document.querySelectorAll('.slide-indicator');
+    let currentSlide = 0;
+    const slideInterval = 5000; // 5 seconds
+    
+    function showSlide(index) {
+        // Remove active class from all slides and indicators
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Add active class to current slide and indicator
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        
+        currentSlide = index;
+    }
+    
+    function nextSlide() {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+    }
+    
+    // Auto-advance slides
+    let slideTimer = setInterval(nextSlide, slideInterval);
+    
+    // Click on indicators to change slide
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            clearInterval(slideTimer);
+            showSlide(index);
+            slideTimer = setInterval(nextSlide, slideInterval);
+        });
+    });
+    
+    // Pause on hover
+    const sliderContainer = document.querySelector('.hero-image-slider');
+    if (sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(slideTimer);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            slideTimer = setInterval(nextSlide, slideInterval);
+        });
+    }
 </script>
 {% endblock %}

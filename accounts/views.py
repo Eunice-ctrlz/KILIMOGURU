@@ -104,12 +104,17 @@ class BuyerRegisterView(CreateView):
 
 
 class UserLoginView(View):
-    """Custom login view"""
+    """Custom login view with next parameter support"""
     template_name = 'accounts/login.html'
     
     def get(self, request):
         form = UserLoginForm()
-        return render(request, self.template_name, {'form': form})
+        # Get next URL from query params or default to home
+        next_url = request.GET.get('next', 'home')
+        return render(request, self.template_name, {
+            'form': form,
+            'next': next_url
+        })
     
     def post(self, request):
         form = UserLoginForm(request, data=request.POST)
@@ -130,7 +135,12 @@ class UserLoginView(View):
                     
                     messages.success(request, f'Welcome back, {user.get_full_name() or user.username}!')
                     
-                    # Redirect based on user type
+                    # Check for next parameter first (priority over user type)
+                    next_url = request.POST.get('next') or request.GET.get('next')
+                    if next_url:
+                        return redirect(next_url)
+                    
+                    # Fallback to user type based redirect
                     if user.is_farmer:
                         return redirect('farmers:dashboard')
                     elif user.is_buyer:
@@ -143,7 +153,25 @@ class UserLoginView(View):
             else:
                 messages.error(request, 'Invalid phone number or password.')
         
-        return render(request, self.template_name, {'form': form})
+        # If form invalid, render with next parameter preserved
+        next_url = request.POST.get('next', 'home')
+        return render(request, self.template_name, {
+            'form': form,
+            'next': next_url
+        })
+    
+    def register_device(self, request, user):
+        """Register user device for offline sync"""
+        device_id = request.META.get('HTTP_USER_AGENT', 'unknown')
+        
+        UserDevice.objects.get_or_create(
+            user=user,
+            device_id=device_id,
+            defaults={
+                'device_type': 'web',
+                'device_name': request.META.get('HTTP_USER_AGENT', 'Web Browser')[:100]
+            }
+        )
     
     def register_device(self, request, user):
         """Register user device for offline sync"""

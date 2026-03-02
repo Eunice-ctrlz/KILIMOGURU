@@ -7,7 +7,7 @@
     <div class="max-w-md w-full">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <div class="w-16 h-16 gradient-bg rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <i class="fas fa-seedling text-white text-3xl"></i>
             </div>
             <h2 class="text-3xl font-bold text-gray-800">Welcome Back</h2>
@@ -16,35 +16,72 @@
         
         <!-- Login Form -->
         <div class="bg-white rounded-2xl shadow-lg p-8">
-            <form method="post" class="space-y-6">
+            <form method="post" action="{% url 'accounts:login' %}" class="space-y-6">
                 {% csrf_token %}
                 
+                <!-- Hidden next field - preserves redirect destination -->
+                <input type="hidden" name="next" value="{{ next|default:'home' }}">
+                
+                <!-- Error Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="{% if message.tags == 'error' %}bg-red-50 border-red-400 text-red-700{% else %}bg-green-50 border-green-400 text-green-700{% endif %} border-l-4 p-4 rounded">
+                        <p class="text-sm">{{ message }}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- Username Field -->
                 <div>
                     <label for="id_username" class="block text-sm font-medium text-gray-700 mb-2">
                         Phone Number or Username
                     </label>
-                    {{ form.username }}
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" name="username" id="id_username" 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition bg-gray-50 focus:bg-white"
+                               placeholder="Enter username or phone" 
+                               value="{{ form.username.value|default:'' }}"
+                               required autofocus>
+                    </div>
                 </div>
                 
+                <!-- Password Field -->
                 <div>
                     <label for="id_password" class="block text-sm font-medium text-gray-700 mb-2">
                         Password
                     </label>
-                    {{ form.password }}
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="password" id="id_password" 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition bg-gray-50 focus:bg-white"
+                               placeholder="Enter password" required>
+                    </div>
                 </div>
                 
+                <!-- Remember & Forgot -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input type="checkbox" id="remember" name="remember" class="form-checkbox">
-                        <label for="remember" class="ml-2 text-sm text-gray-600">Remember me</label>
+                        <input type="checkbox" id="remember" name="remember" 
+                               class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer">
+                        <label for="remember" class="ml-2 text-sm text-gray-600 cursor-pointer select-none">Remember me</label>
                     </div>
-                    <a href="{% url 'accounts:password_reset' %}" class="text-sm text-green-600 hover:text-green-700">
+                    <a href="{% url 'accounts:password_reset' %}" class="text-sm text-green-600 hover:text-green-700 font-medium transition">
                         Forgot password?
                     </a>
                 </div>
                 
-                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold">
-                    Sign In
+                <!-- Green Login Button -->
+                <button type="submit" 
+                        class="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white py-3 px-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                    <span class="flex items-center justify-center">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Sign In
+                    </span>
                 </button>
             </form>
             
@@ -60,13 +97,13 @@
             
             <!-- Social Login -->
             <div class="grid grid-cols-2 gap-4">
-                <button class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                    <i class="fab fa-google text-red-500 mr-2"></i>
-                    Google
+                <button type="button" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition duration-200 group">
+                    <i class="fab fa-google text-red-500 mr-2 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-gray-700 font-medium">Google</span>
                 </button>
-                <button class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                    <i class="fab fa-facebook text-blue-600 mr-2"></i>
-                    Facebook
+                <button type="button" class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition duration-200 group">
+                    <i class="fab fa-facebook text-blue-600 mr-2 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-gray-700 font-medium">Facebook</span>
                 </button>
             </div>
         </div>
@@ -74,17 +111,12 @@
         <!-- Register Link -->
         <p class="text-center mt-6 text-gray-600">
             Don't have an account? 
-            <a href="{% url 'accounts:register_farmer' %}" class="text-green-600 font-medium hover:text-green-700">Register as Farmer</a>
-            or
-            <a href="{% url 'accounts:register_buyer' %}" class="text-green-600 font-medium hover:text-green-700">Buyer</a>
+            <a href="{% url 'accounts:register_farmer' %}" class="text-green-600 font-semibold hover:text-green-700 transition">Register as Farmer</a>
+            <span class="mx-1">or</span>
+            <a href="{% url 'accounts:register_buyer' %}" class="text-green-600 font-semibold hover:text-green-700 transition">Buyer</a>
         </p>
         
-        <!-- USSD Option -->
-        <div class="mt-6 text-center">
-            <p class="text-sm text-gray-500">
-                No smartphone? Dial <span class="font-bold text-green-600">*384*12345#</span> for USSD access
-            </p>
-        </div>
+        
     </div>
 </div>
 {% endblock %}

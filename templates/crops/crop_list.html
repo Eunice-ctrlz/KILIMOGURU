@@ -4,104 +4,136 @@
 
 {% block content %}
 <!-- Header -->
-<div class="gradient-bg text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl md:text-4xl font-bold mb-4">Crop Database</h1>
-        <p class="text-green-100 text-lg">Explore crops suitable for Kenyan farming conditions</p>
+<div class="relative overflow-hidden bg-[#16a34a] text-white py-16">
+    <!-- Decorative Leaves -->
+    <div class="absolute top-0 left-0 w-64 h-64 opacity-10">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q130,60 120,100 Q110,140 80,160 Q50,140 40,100 Q30,60 60,20 Q80,0 100,20 Z" transform="rotate(-15 100 100)"/>
+        </svg>
     </div>
+    <div class="absolute bottom-0 right-0 w-48 h-48 opacity-10 transform rotate-180">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q130,60 120,100 Q110,140 80,160 Q50,140 40,100 Q30,60 60,20 Q80,0 100,20 Z"/>
+        </svg>
+    </div>
+    <div class="absolute top-10 right-20 w-32 h-32 opacity-5">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q140,50 130,90 Q120,130 90,150 Q60,130 50,90 Q40,50 80,20 Q90,10 100,20 Z" transform="rotate(45 100 100)"/>
+        </svg>
+    </div>
+    <div class="absolute bottom-10 left-20 w-24 h-24 opacity-5 transform -rotate-45">
+        <svg viewBox="0 0 200 200" fill="currentColor">
+            <path d="M100,20 Q140,50 130,90 Q120,130 90,150 Q60,130 50,90 Q40,50 80,20 Q90,10 100,20 Z"/>
+        </svg>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex items-center gap-3 mb-4">
+            <i class="fas fa-leaf text-3xl opacity-80"></i>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight">Crop Database</h1>
+        </div>
+        <p class="text-green-100 text-lg md:text-xl font-light max-w-2xl">Explore crops suitable for Kenyan farming conditions</p>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-stone-50 to-transparent"></div>
 </div>
 
 <!-- Filters & Search -->
-<div class="bg-white shadow-md">
+<div class="bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <form method="get" class="flex flex-col md:flex-row gap-4">
-            <div class="flex-1">
-                <div class="relative">
-                    <input type="text" name="search" value="{{ request.GET.search }}" 
-                           placeholder="Search crops..." 
-                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            <div class="flex-1 relative group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-stone-400 group-focus-within:text-[#16a34a] transition-colors"></i>
                 </div>
+                <input type="text" name="search" value="{{ request.GET.search }}" 
+                       placeholder="Search crops..." 
+                       class="w-full pl-10 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-[#16a34a]/20 focus:border-[#16a34a] transition-all duration-300 hover:bg-white hover:shadow-md">
             </div>
-            <div class="md:w-48">
-                <select name="category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+            <div class="md:w-56 relative">
+                <select name="category" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-[#16a34a]/20 focus:border-[#16a34a] transition-all duration-300 hover:bg-white hover:shadow-md appearance-none cursor-pointer">
                     <option value="">All Categories</option>
                     {% for key, value in categories %}
                         <option value="{{ key }}" {% if selected_category == key %}selected{% endif %}>{{ value }}</option>
                     {% endfor %}
                 </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                    <i class="fas fa-chevron-down text-stone-400 text-sm"></i>
+                </div>
             </div>
-            <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg">
-                Filter
+            <button type="submit" class="bg-[#16a34a] hover:bg-[#15803d] text-white px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#16a34a]/25 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2">
+                <i class="fas fa-filter"></i>Filter
             </button>
         </form>
     </div>
 </div>
 
 <!-- Crop Grid -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-stone-50 min-h-screen">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {% for crop in crops %}
-            <div class="card-hover bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="h-48 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+            <div class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden border border-stone-100 hover:border-[#16a34a]/30 hover:-translate-y-1">
+                <div class="h-52 overflow-hidden relative">
                     {% if crop.image %}
-                        <img src="{{ crop.image.url }}" alt="{{ crop.name }}" class="w-full h-full object-cover">
+                        <img src="{{ crop.image.url }}" alt="{{ crop.name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     {% else %}
-                        <i class="fas fa-seedling text-green-400 text-6xl"></i>
+                        <div class="w-full h-full bg-stone-100 flex items-center justify-center">
+                            <i class="fas fa-seedling text-[#16a34a]/30 text-6xl group-hover:text-[#16a34a]/50 transition-colors duration-300"></i>
+                        </div>
                     {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <div class="p-6">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-semibold text-[#16a34a] bg-[#16a34a]/10 px-3 py-1 rounded-full border border-[#16a34a]/20">
                             {{ crop.get_category_display }}
                         </span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">{{ crop.name }}</h3>
+                    <h3 class="text-xl font-bold text-stone-800 mb-1 group-hover:text-[#16a34a] transition-colors">{{ crop.name }}</h3>
                     {% if crop.local_name %}
-                        <p class="text-sm text-gray-500 mb-2">{{ crop.local_name }}</p>
+                        <p class="text-sm text-stone-500 mb-3 italic">{{ crop.local_name }}</p>
                     {% endif %}
-                    <div class="flex items-center text-sm text-gray-600 mb-4">
-                        <i class="fas fa-clock mr-2 text-green-500"></i>
+                    <div class="flex items-center text-sm text-stone-600 mb-5 bg-stone-50 p-3 rounded-lg">
+                        <i class="fas fa-clock mr-2 text-[#16a34a]"></i>
                         <span>{{ crop.growing_period_days }} days to maturity</span>
                     </div>
                     <a href="{% url 'crops:crop_detail' crop.pk %}" 
-                       class="block w-full text-center btn-primary text-white py-2 rounded-lg">
+                       class="block w-full text-center bg-stone-800 hover:bg-[#16a34a] text-white py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-[#16a34a]/20">
                         View Details
                     </a>
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-12">
-                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-search text-gray-400 text-3xl"></i>
+            <div class="col-span-full flex flex-col items-center justify-center py-20">
+                <div class="w-32 h-32 bg-stone-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                    <i class="fas fa-search text-stone-400 text-4xl"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">No crops found</h3>
-                <p class="text-gray-500">Try adjusting your search or filters</p>
+                <h3 class="text-2xl font-bold text-stone-700 mb-2">No crops found</h3>
+                <p class="text-stone-500 text-center max-w-md">Try adjusting your search terms or filters to find what you're looking for</p>
             </div>
         {% endfor %}
     </div>
     
     <!-- Pagination -->
     {% if is_paginated %}
-        <div class="flex justify-center mt-12">
-            <nav class="flex items-center space-x-2">
+        <div class="flex justify-center mt-16">
+            <nav class="flex items-center space-x-2 bg-white p-2 rounded-2xl shadow-sm border border-stone-200">
                 {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-chevron-left"></i>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">
+                        <i class="fas fa-chevron-left text-sm"></i>
                     </a>
                 {% endif %}
                 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <span class="px-4 py-2 bg-green-600 text-white rounded-lg">{{ num }}</span>
+                        <span class="w-10 h-10 flex items-center justify-center bg-[#16a34a] text-white rounded-xl font-medium shadow-lg shadow-[#16a34a]/30">{{ num }}</span>
                     {% else %}
-                        <a href="?page={{ num }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">{{ num }}</a>
+                        <a href="?page={{ num }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
                 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-chevron-right"></i>
+                    <a href="?page={{ page_obj.next_page_number }}" class="w-10 h-10 flex items-center justify-center rounded-xl border border-stone-200 text-stone-600 hover:bg-[#16a34a]/10 hover:border-[#16a34a]/30 hover:text-[#16a34a] transition-all duration-300">
+                        <i class="fas fa-chevron-right text-sm"></i>
                     </a>
                 {% endif %}
             </nav>
